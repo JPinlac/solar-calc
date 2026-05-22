@@ -433,6 +433,8 @@
 
     // Sync conditional sections
     $('solarOpts').classList.toggle('show', s.addSolar);
+    const orientField = $('orientationField');
+    if (orientField) orientField.classList.toggle('show', s.addSolar);
     $('evOpts').classList.toggle('show', s.addEv);
 
     // Sync value displays
