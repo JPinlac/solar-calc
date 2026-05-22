@@ -321,6 +321,70 @@
     </p>
   </section>
 
+  <!-- ============ SECTION 7b: Opportunity Cost ============ -->
+  <section>
+    <h2>Opportunity Cost — Or, "What if I Just Invested the Money?"</h2>
+    <p>
+      The fair comparison for a $5,865 system isn't $0 — it's whatever else that capital could have
+      done. The table below compares cumulative <strong>gross</strong> system savings (in nominal
+      dollars, with DTE rates inflating at 5.5%/yr) against investing the same equipment cost at a
+      conservative <strong>5% real return</strong>, assuming 2.5% general inflation — about
+      <strong>7.6% nominal</strong> per year. Long-run real returns on a diversified US equity index
+      have averaged 6–7%; 5% real is intentionally conservative.
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Scenario</th>
+            <th>Metric</th>
+            <th class="num">Year 5</th>
+            <th class="num">Year 10</th>
+            <th class="num">Year 15</th>
+            <th class="num">Year 20</th>
+            <th class="num">Year 25</th>
+          </tr>
+        </thead>
+        <tbody id="opportunity-tbody"></tbody>
+      </table>
+    </div>
+
+    <p class="small text-dim">
+      Read each scenario row pair top-down: top row is your cumulative system savings, bottom row is
+      what the same capital would be worth invested. The system "wins" the year the green number
+      crosses above the orange one.
+    </p>
+
+    <div class="callout success">
+      <h4>What this tells you</h4>
+      <p>
+        On <em>pure dollars</em> alone, a battery-only Stage 1 with no EV (Scenario A) underperforms
+        a low-cost index fund at every horizon. That's not surprising — the equipment doesn't
+        compound; it shifts rate-arbitrage value year by year. You buy it for the non-financial
+        benefits: whole-home outage backup, EV-readiness, and a hedge against the DTE rate
+        trajectory shown above.
+      </p>
+      <p class="mb-0">
+        The picture changes as soon as EVs enter the mix. Scenario B (house + 1 EV) is roughly
+        break-even with investing by Year 25. <strong>Scenario C (house + 2 EVs) overtakes the
+        investment around Year 12</strong> and pulls steadily ahead. <strong>Scenario D (full
+        battery + solar + 2 EVs at $8,325)</strong> matches the investment by Year 10 and beats it
+        by <strong>$26,000+ over 25 years</strong>. The kicker: the system also delivers the
+        non-financial benefits the investment can't.
+      </p>
+    </div>
+
+    <p class="small text-dim">
+      Caveats: this comparison assumes the investment is taxable income-producing (no Roth wrapper),
+      and the system has zero replacement cost over 25 years (battery cycle life of 8,000 cycles
+      supports ~22 years of daily cycling — battery may need replacement once around Year 22, which
+      this table does not subtract). Also: the system delivers <em>non-financial</em> value the
+      index fund can't (whole-home outage backup, EV-readiness, rate-hike insurance) — see the
+      landing page for those.
+    </p>
+  </section>
+
   <!-- ============ SECTION 8: Closing ============ -->
   <section>
     <div class="callout warning">
@@ -509,6 +573,92 @@
       '<td class="num">' + (y === base ? '—' : '+' + fmtDollars(inc).replace('$', '$')) + '</td>';
     billsTbody.appendChild(tr);
   });
+
+  // ====== Opportunity Cost table ======
+  // Year-by-year nominal cumulative gross savings for each scenario, anchored on
+  // the published per-year tables (5.5% annual savings growth). Investment
+  // alternative uses 5% real return at assumed 2.5% general inflation
+  // = ~7.625% nominal/yr applied to the same equipment cost the system uses.
+  const RATE_GROWTH = 0.055;
+  const REAL_RETURN = 0.05;
+  const INFLATION = 0.025;
+  const NOMINAL_RETURN = (1 + REAL_RETURN) * (1 + INFLATION) - 1;
+  const HORIZONS = [5, 10, 15, 20, 25];
+
+  // Each scenario: list of (year, annualSavings) pairs from the actual published
+  // tables. The projector extends beyond the last known year by growing the most
+  // recent annual savings figure at RATE_GROWTH.
+  const scenarios = [
+    {
+      id: 'A', label: 'A: House only',
+      cost: 5865,
+      annual: { 1: 443, 2: 467, 3: 493, 4: 520, 5: 549, 6: 579, 7: 611, 8: 644, 9: 680, 10: 717, 11: 757 },
+    },
+    {
+      id: 'B', label: 'B: House + 1 EV',
+      cost: 5865,
+      annual: { 1: 443, 2: 763, 3: 805, 4: 849, 5: 896, 6: 946, 7: 998, 8: 1052 },
+    },
+    {
+      id: 'C', label: 'C: House + 2 EVs',
+      cost: 5865,
+      annual: { 1: 443, 2: 763, 3: 1065, 4: 1124, 5: 1186, 6: 1252, 7: 1320 },
+    },
+    {
+      id: 'D', label: 'D: House + 2 EVs + Solar',
+      cost: 8325,
+      annual: { 1: 443, 2: 763, 3: 1765, 4: 1863, 5: 1965, 6: 2074 },
+    },
+  ];
+
+  function cumulativeAt(scenario, targetYear) {
+    let cum = 0;
+    let lastYear = 0;
+    let lastAnnual = 0;
+    Object.keys(scenario.annual).forEach((y) => {
+      const yr = +y;
+      const a = scenario.annual[y];
+      if (yr <= targetYear) {
+        cum += a;
+        lastYear = yr;
+        lastAnnual = a;
+      }
+    });
+    // Extrapolate beyond the published table using 5.5% annual growth.
+    for (let y = lastYear + 1; y <= targetYear; y++) {
+      lastAnnual *= (1 + RATE_GROWTH);
+      cum += lastAnnual;
+    }
+    return cum;
+  }
+
+  function invValueAt(cost, year) {
+    return cost * Math.pow(1 + NOMINAL_RETURN, year);
+  }
+
+  const oppTbody = document.querySelector('#opportunity-tbody');
+  if (oppTbody) {
+    scenarios.forEach((sc) => {
+      const trSav = document.createElement('tr');
+      let savRow = '<td rowspan="2"><strong>' + sc.label + '</strong><br><span class="small text-dim">$' + sc.cost.toLocaleString() + ' system</span></td>'
+        + '<td><span class="text-success">System cumulative savings</span></td>';
+      HORIZONS.forEach((yr) => {
+        const cum = cumulativeAt(sc, yr);
+        savRow += '<td class="num text-success">' + fmtDollars(cum) + '</td>';
+      });
+      trSav.innerHTML = savRow;
+      oppTbody.appendChild(trSav);
+
+      const trInv = document.createElement('tr');
+      let invRow = '<td><span class="text-warning">Invested @ 5% real</span></td>';
+      HORIZONS.forEach((yr) => {
+        const v = invValueAt(sc.cost, yr);
+        invRow += '<td class="num text-warning">' + fmtDollars(v) + '</td>';
+      });
+      trInv.innerHTML = invRow;
+      oppTbody.appendChild(trInv);
+    });
+  }
 })();
 </script>
 </body>

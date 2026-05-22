@@ -261,6 +261,17 @@
     const band = season === 'summer' ? plan.summer : plan.nonSummer;
     const superOffRate = plan.hasSuperOff ? band.superOff : band.offPeak;
 
+    // Dynamic ESS-style smart overnight charging: don't fill the battery from
+    // the grid to capacity if tomorrow's solar will fill it for free. Reserve
+    // headroom equal to ~70% of expected daily solar production. Floors at 30%
+    // SOC to ensure the home can ride out the morning load before solar arrives.
+    // Real Dynamic ESS uses weather forecasts; we approximate with the seasonal
+    // average production for the modelled day.
+    const expectedSolarKwh = solar.reduce((a, b) => a + b, 0);
+    const overnightTargetSoc = batteryCapacity > 0
+      ? Math.max(batteryCapacity * 0.30, batteryCapacity - expectedSolarKwh * 0.70)
+      : 0;
+
     const hourly = [];
     let dailyCost = 0;
     let dailyExport = 0;
@@ -277,9 +288,10 @@
       let exportKwh = 0;
       let batteryFlow = 0; // positive = charging, negative = discharging
 
-      // D1.13 overnight charging: top off battery from super off-peak window.
-      if (planId === 'D1.13' && isSuperOffWindow && batteryCapacity > 0 && soc < batteryCapacity) {
-        const room = batteryCapacity - soc;
+      // D1.13 overnight charging: top off battery toward the smart target SOC
+      // (NOT all the way to capacity — see overnightTargetSoc comment above).
+      if (planId === 'D1.13' && isSuperOffWindow && batteryCapacity > 0 && soc < overnightTargetSoc) {
+        const room = overnightTargetSoc - soc;
         const chargeKwh = Math.min(room, 3.0); // ~3 kWh/hr practical charge limit
         soc += chargeKwh * ROUND_TRIP; // grid kWh into battery, after losses
         gridImport += chargeKwh;
