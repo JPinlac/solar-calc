@@ -8,7 +8,43 @@
 <link rel="stylesheet" href="assets/css/main.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
-  /* Page-local tweaks */
+  /* ---------- Single-column scrollable layout ---------- */
+  /* Override the two-column grid from main.css. Form sits at top, results
+     flow below — everything is one continuous scroll. */
+  .calc-layout {
+    display: block;
+  }
+  .calc-form {
+    position: static;
+    margin-bottom: 2rem;
+  }
+  /* Inputs in a responsive grid so the form uses the full container width */
+  .calc-form .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem 1.5rem;
+    align-items: start;
+  }
+  .calc-form .form-grid .field { margin-bottom: 0; }
+  /* Section dividers inside the form for visual grouping */
+  .form-section-title {
+    grid-column: 1 / -1;
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--color-text-dim);
+    margin: .25rem 0 0;
+    padding-top: .5rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .form-section-title:first-of-type {
+    margin-top: 0; padding-top: 0; border-top: none;
+  }
+  /* Conditional sub-fields use the same grid slot but only appear when active */
+  .conditional { display: none; }
+  .conditional.show { display: block; }
+
+  /* Page-local tweaks (existing) */
   .season-toggle { display: flex; gap: .5rem; margin-bottom: 1rem; }
   .season-toggle button {
     background: var(--color-bg-alt);
@@ -39,8 +75,6 @@
     border-bottom: 1px dashed var(--color-border);
   }
   .equipment-breakdown li:last-child { border-bottom: none; }
-  .conditional { display: none; }
-  .conditional.show { display: block; }
   .reasoning {
     background: var(--color-bg-alt);
     border-left: 3px solid var(--color-accent);
@@ -74,82 +108,101 @@
 
   <div class="calc-layout">
     <form class="calc-form" id="calc-form" onsubmit="return false;">
+      <div class="form-grid">
 
-      <div class="field">
-        <label for="dailyKwh">Daily kWh usage (total)</label>
-        <span class="help">Typical DTE home today: 15–25 kWh/day. The slider auto-bumps when you check loads below (EV, heat pump, etc.) so it reflects your <strong>projected total</strong>.</span>
-        <div class="range-row">
-          <input type="range" id="dailyKwh" min="5" max="120" step="1" value="19">
-          <span class="range-value" id="dailyKwhVal">19</span>
+        <h3 class="form-section-title">Your household</h3>
+
+        <div class="field">
+          <label for="dailyKwh">Daily kWh usage (total)</label>
+          <span class="help">Typical DTE home today: 15–25 kWh/day. The slider auto-bumps when you check loads below so it reflects your <strong>projected total</strong>.</span>
+          <div class="range-row">
+            <input type="range" id="dailyKwh" min="5" max="120" step="1" value="19">
+            <span class="range-value" id="dailyKwhVal">19</span>
+          </div>
         </div>
-      </div>
 
-      <div class="field">
-        <label for="currentPlan">Current rate plan</label>
-        <select id="currentPlan">
-          <option value="D1.11" selected>D1.11 — Time of Day 3–7pm (default)</option>
-          <option value="D1.2">D1.2 — Time of Day 11am–7pm</option>
-          <option value="D1.13">D1.13 — Overnight Savers</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label>
-          <input type="checkbox" id="coolCurrents">
-          Has Cool Currents (separate AC meter)
-        </label>
-        <span class="help">DTE moves ~250 kWh/mo summer AC load to a flat-rate meter.</span>
-      </div>
-
-      <div class="field">
-        <label for="evCount">Number of EVs (0–4)</label>
-        <span class="help">Each EV charges at the 11.74¢ super off-peak rate. 0 = no EV.</span>
-        <div class="range-row">
-          <input type="range" id="evCount" min="0" max="4" step="1" value="0">
-          <span class="range-value" id="evCountVal">0</span>
+        <div class="field">
+          <label for="currentPlan">Current rate plan</label>
+          <select id="currentPlan">
+            <option value="D1.11" selected>D1.11 — Time of Day 3–7pm (default)</option>
+            <option value="D1.2">D1.2 — Time of Day 11am–7pm</option>
+            <option value="D1.13">D1.13 — Overnight Savers</option>
+          </select>
         </div>
-      </div>
 
-      <div class="field">
-        <label>Planned additions</label>
-        <div class="check-list">
-          <label><input type="checkbox" id="addSolar"> Solar (400W Phono panels @ $145)</label>
-          <label><input type="checkbox" id="addMiniSplit"> Mini-split</label>
-          <label><input type="checkbox" id="addHeatPump"> Heat pump (replaces gas furnace)</label>
-          <label><input type="checkbox" id="addEwh"> Electric water heater</label>
+        <div class="field">
+          <label>
+            <input type="checkbox" id="coolCurrents">
+            Has Cool Currents (separate AC meter)
+          </label>
+          <span class="help">DTE moves ~250 kWh/mo summer AC load to a flat-rate meter.</span>
         </div>
-      </div>
 
-      <div class="field conditional" id="solarOpts">
-        <label for="panelCount">Number of 400W panels</label>
-        <div class="range-row">
-          <input type="range" id="panelCount" min="4" max="30" step="1" value="8">
-          <span class="range-value" id="panelCountVal">8</span>
-        </div>
-        <div style="display:flex;gap:.5rem;margin-top:.4rem;flex-wrap:wrap">
-          <button type="button" class="btn btn-secondary" style="font-size:.8rem;padding:.25rem .6rem" data-preset-panels="8">Stage 2-Small (8)</button>
-          <button type="button" class="btn btn-secondary" style="font-size:.8rem;padding:.25rem .6rem" data-preset-panels="24">Stage 2-Large (24)</button>
-        </div>
-        <span class="help">Phono Solar 400W panels at $145 each via <a href="https://www.d2solardetroit.com/volunteer" target="_blank" rel="noopener nofollow">D2 Solar Detroit</a>. Two recommended sizes: <strong>8 panels (3.2 kW)</strong> for a baseline home, or <strong>24 panels (9.6 kW)</strong> for an electrified household.</span>
-        <label for="orientation" style="margin-top:.5rem">Roof orientation</label>
-        <select id="orientation">
-          <option value="S" selected>South (optimum)</option>
-          <option value="SE">Southeast</option>
-          <option value="SW">Southwest</option>
-          <option value="E">East</option>
-          <option value="W">West</option>
-        </select>
-      </div>
+        <h3 class="form-section-title">Planned additions</h3>
 
-      <div class="field conditional" id="evOpts">
-        <label for="evMiles">Daily miles per EV</label>
-        <span class="help">Efficiency assumed: 3.5 mi/kWh. Total EV kWh/day = count × miles / 3.5.</span>
-        <div class="range-row">
-          <input type="range" id="evMiles" min="10" max="100" step="5" value="35">
-          <span class="range-value" id="evMilesVal">35</span>
+        <div class="field">
+          <label for="evCount">Number of EVs (0–4)</label>
+          <span class="help">Each EV charges at the 11.74¢ super off-peak rate. 0 = no EV.</span>
+          <div class="range-row">
+            <input type="range" id="evCount" min="0" max="4" step="1" value="0">
+            <span class="range-value" id="evCountVal">0</span>
+          </div>
         </div>
-      </div>
 
+        <div class="field conditional" id="evOpts">
+          <label for="evMiles">Daily miles per EV</label>
+          <span class="help">Efficiency assumed: 3.5 mi/kWh. Total EV kWh/day = count × miles / 3.5.</span>
+          <div class="range-row">
+            <input type="range" id="evMiles" min="10" max="100" step="5" value="35">
+            <span class="range-value" id="evMilesVal">35</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Other loads</label>
+          <div class="check-list">
+            <label><input type="checkbox" id="addMiniSplit"> Mini-split</label>
+            <label><input type="checkbox" id="addHeatPump"> Heat pump (replaces gas furnace)</label>
+            <label><input type="checkbox" id="addEwh"> Electric water heater</label>
+          </div>
+        </div>
+
+        <h3 class="form-section-title">Solar</h3>
+
+        <div class="field">
+          <label>
+            <input type="checkbox" id="addSolar">
+            Install solar (400W Phono panels @ $145)
+          </label>
+          <span class="help">Sized to maximize self-consumption, not exports.</span>
+        </div>
+
+        <div class="field conditional" id="solarOpts">
+          <label for="panelCount">Number of 400W panels</label>
+          <div class="range-row">
+            <input type="range" id="panelCount" min="4" max="30" step="1" value="8">
+            <span class="range-value" id="panelCountVal">8</span>
+          </div>
+          <div style="display:flex;gap:.5rem;margin-top:.4rem;flex-wrap:wrap">
+            <button type="button" class="btn btn-secondary" style="font-size:.8rem;padding:.25rem .6rem" data-preset-panels="8">Stage 2-Small (8)</button>
+            <button type="button" class="btn btn-secondary" style="font-size:.8rem;padding:.25rem .6rem" data-preset-panels="24">Stage 2-Large (24)</button>
+          </div>
+          <span class="help">Phono Solar 400W panels at $145 each via <a href="https://www.d2solardetroit.com/volunteer" target="_blank" rel="noopener nofollow">D2 Solar Detroit</a>.</span>
+        </div>
+
+        <div class="field conditional" id="orientationField">
+          <label for="orientation">Roof orientation</label>
+          <select id="orientation">
+            <option value="S" selected>South (optimum)</option>
+            <option value="SE">Southeast</option>
+            <option value="SW">Southwest</option>
+            <option value="E">East</option>
+            <option value="W">West</option>
+          </select>
+          <span class="help">South-facing is optimal; east/west loses ~12%.</span>
+        </div>
+
+      </div>
     </form>
 
     <div class="calc-result" id="calc-result">
