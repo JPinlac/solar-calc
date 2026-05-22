@@ -238,10 +238,12 @@
 
   // ---------- Solar production curve ----------
   // dailyKwh = arrayKw * peakSunHours * 0.82, distributed via hourlySolarShape.
-  const buildSolarDay = (s, season) => {
+  // When idealSolar is true we use SUMMER_PSH regardless of the actual season —
+  // this represents the upper bound if Michigan had summer-quality sun all year.
+  const buildSolarDay = (s, season, { idealSolar = false } = {}) => {
     if (!s.addSolar) return new Array(24).fill(0);
     const arrayKw = s.panelCount * 0.4;
-    const psh = season === 'summer' ? SUMMER_PSH : WINTER_PSH;
+    const psh = idealSolar ? SUMMER_PSH : (season === 'summer' ? SUMMER_PSH : WINTER_PSH);
     const orient = DTE.solar.orientationFactor[s.orientation] || 1.0;
     const dailyKwh = arrayKw * psh * DTE.solar.systemLoss * orient;
     return DTE.hourlySolarShape.map(p => p * dailyKwh);
@@ -249,9 +251,9 @@
 
   // ---------- Simulate one day ----------
   // Returns { hourly: [...24], dailyCost, dailyExportRevenue, gridImportByPeriod, batterySoc[] }
-  const simulateDay = (s, season, planId) => {
+  const simulateDay = (s, season, planId, opts = {}) => {
     const load = buildLoadDay(s, season);
-    const solar = buildSolarDay(s, season);
+    const solar = buildSolarDay(s, season, opts);
     const batteryCapacity = s.addBattery ? s.batteryCount * BATTERY_KWH_EACH : 0;
     let soc = batteryCapacity * 0.5; // start half full
 
@@ -381,9 +383,9 @@
   // Mix summer & winter daily costs: 4 summer months for D1.11/D1.13, 5 for D1.2.
   // We approximate annual = 122 summer days + 243 non-summer days for D1.11/D1.13,
   // and 153 / 212 for D1.2. Close enough.
-  const annualizeCost = (s, planId) => {
-    const summer = simulateDay(s, 'summer', planId);
-    const winter = simulateDay(s, 'winter', planId);
+  const annualizeCost = (s, planId, opts = {}) => {
+    const summer = simulateDay(s, 'summer', planId, opts);
+    const winter = simulateDay(s, 'winter', planId, opts);
     const summerDays = planId === 'D1.2' ? 153 : 122;
     const winterDays = 365 - summerDays;
     // Cool Currents: add the separate-meter cost back (~17¢ × 250 kWh/mo × 4 mo).
@@ -432,7 +434,14 @@
     const baselineState = { ...s, addSolar: false, batteryCount: 0, addBattery: false };
     const baseline = annualizeCost(baselineState, s.currentPlan);
     const optimized = annualizeCost(s, rec.id);
-    const annualSavings = baseline.annual - optimized.annual;
+    // Ideal scenario: same calc but solar produces at summer quality year-round.
+    // Quantifies how much the Michigan winter shoulder costs on the solar side.
+    const optimizedIdeal = annualizeCost(s, rec.id, { idealSolar: true });
+    const annualSavings = baseline.annual - optimized.annual;        // realistic
+    const annualSavingsIdeal = baseline.annual - optimizedIdeal.annual;
+    const solarShortfallPct = annualSavingsIdeal > 0
+      ? Math.max(0, (annualSavingsIdeal - annualSavings) / annualSavingsIdeal) * 100
+      : 0;
 
     const eq = equipmentCost(s);
     const payback = eq.total > 0 && annualSavings > 0 ? eq.total / annualSavings : null;
@@ -484,7 +493,17 @@
         <div class="metric ${payback && payback < 15 ? 'good' : 'warn'}">
           <div class="metric-label">Payback Period</div>
           <div class="metric-value">${payback ? payback.toFixed(1) + ' yr' : '—'}</div>
-          <div class="metric-sub">${annualSavings > 0 ? fmtCurrency(annualSavings) + ' annual savings' : 'No savings vs baseline'}</div>
+          <div class="metric-sub">Based on realistic yearly savings</div>
+        </div>
+        <div class="metric ${annualSavings > 0 ? 'good' : 'warn'}">
+          <div class="metric-label">Yearly Savings — Realistic</div>
+          <div class="metric-value">${fmtCurrency(annualSavings)}</div>
+          <div class="metric-sub">Michigan's actual summer + winter solar mix</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Yearly Savings — Ideal</div>
+          <div class="metric-value">${fmtCurrency(annualSavingsIdeal)}</div>
+          <div class="metric-sub">If solar produced summer-quality year-round</div>
         </div>
         <div class="metric ${lifetimeSavings > 0 ? 'good' : 'warn'}">
           <div class="metric-label">25-Year Net Savings</div>
@@ -531,6 +550,14 @@
             <div>Baseline cost: <span class="val">${fmtCurrency2(baseline.winter.dailyCost)}</span></div>
           </div>
         </div>
+        ${s.addSolar && solarShortfallPct > 1 ? `
+          <p class="small text-dim" style="margin-top:.75rem">
+            <strong>Michigan winter shoulder:</strong> short December–February daylight reduces your solar
+            output by about <strong class="text-warning">${solarShortfallPct.toFixed(0)}%</strong> vs an
+            ideal summer-year-round baseline. That's the gap between the Realistic and Ideal yearly-savings
+            numbers above — and it's why battery arbitrage on D1.13 carries this system through winter.
+          </p>
+        ` : ''}
         <p class="small text-dim" style="margin-top:.75rem">
           Note: payback uses a conservative 3%/yr rate inflation. The projections page uses 5.5%/yr —
           that's the aggressive scenario justified by Michigan-specific data-center demand and grid hardening.
