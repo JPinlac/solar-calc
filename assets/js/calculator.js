@@ -36,6 +36,57 @@
   let chart = null;
   let activeSeason = 'summer';
 
+  // Annual-average daily kWh contribution from each load-affecting addition.
+  // The daily-kWh slider represents TOTAL household load including these — when
+  // a checkbox toggles, the slider is bumped by the corresponding value below.
+  // Mini-split and heat pump are seasonal; we use a weighted annual average so
+  // the slider reads like a year-round daily figure.
+  const ADDITION_KWH = {
+    ev: (state) => state.evMiles / EV_EFFICIENCY,                  // year-round
+    ewh: () => EWH_KWH,                                            // year-round
+    mini: () => 3.5,                                               // ~avg of 4 (summer) / 3 (winter)
+    hp: () => HEAT_PUMP_WINTER_KWH * 0.7,                          // winter-weighted annual avg
+  };
+
+  // Tracks the addition contributions currently baked into the slider, so we
+  // know exactly how much to add or subtract when a checkbox/miles value changes.
+  let prevAdditions = null;
+
+  // Sync the daily-kWh slider to reflect newly-added or removed loads.
+  // Runs at the top of render() before reading state, so the read-back sees
+  // the bumped value. User-initiated drags of the slider itself are preserved
+  // (delta is zero in that case because additions didn't change).
+  const syncSliderWithAdditions = () => {
+    const checked = {
+      ev: $('addEv').checked,
+      ewh: $('addEwh').checked,
+      mini: $('addMiniSplit').checked,
+      hp: $('addHeatPump').checked,
+    };
+    const evMiles = +$('evMiles').value;
+    const additions = {
+      ev: checked.ev ? ADDITION_KWH.ev({ evMiles }) : 0,
+      ewh: checked.ewh ? ADDITION_KWH.ewh() : 0,
+      mini: checked.mini ? ADDITION_KWH.mini() : 0,
+      hp: checked.hp ? ADDITION_KWH.hp() : 0,
+    };
+    if (prevAdditions === null) {
+      prevAdditions = additions;
+      return;
+    }
+    const delta = (additions.ev - prevAdditions.ev) +
+                  (additions.ewh - prevAdditions.ewh) +
+                  (additions.mini - prevAdditions.mini) +
+                  (additions.hp - prevAdditions.hp);
+    prevAdditions = additions;
+    if (Math.abs(delta) < 0.05) return;
+    const slider = $('dailyKwh');
+    const min = +slider.min;
+    const max = +slider.max;
+    const newVal = Math.max(min, Math.min(max, +slider.value + delta));
+    slider.value = Math.round(newVal);
+  };
+
   // ---------- Read form state ----------
   // Battery count and inverter tier are NOT user inputs anymore — both are
   // sized automatically from the load profile (see autoSizeBattery / autoSizeInverter).
@@ -125,6 +176,16 @@
   const buildLoadDay = (s, season) => {
     let baseDaily = s.dailyKwh;
 
+    // The slider value already includes annual-average kWh for each checked
+    // addition (see syncSliderWithAdditions). Subtract those contributions here
+    // before applying the residential hourly curve, then re-layer the additions
+    // at their specific hours below. Otherwise the additions get double-counted.
+    if (s.addEv) baseDaily -= ADDITION_KWH.ev(s);
+    if (s.addEwh) baseDaily -= ADDITION_KWH.ewh();
+    if (s.addMiniSplit) baseDaily -= ADDITION_KWH.mini();
+    if (s.addHeatPump) baseDaily -= ADDITION_KWH.hp();
+    baseDaily = Math.max(2, baseDaily);
+
     // Cool Currents: subtract ~250 kWh/mo summer AC from main meter.
     if (s.coolCurrents && season === 'summer') {
       baseDaily = Math.max(2, baseDaily - (COOL_CURRENTS_SUMMER_KWH_MO / 30));
@@ -177,10 +238,12 @@
 
   // ---------- Solar production curve ----------
   // dailyKwh = arrayKw * peakSunHours * 0.82, distributed via hourlySolarShape.
-  const buildSolarDay = (s, season) => {
+  // When idealSolar is true we use SUMMER_PSH regardless of the actual season —
+  // this represents the upper bound if Michigan had summer-quality sun all year.
+  const buildSolarDay = (s, season, { idealSolar = false } = {}) => {
     if (!s.addSolar) return new Array(24).fill(0);
     const arrayKw = s.panelCount * 0.4;
-    const psh = season === 'summer' ? SUMMER_PSH : WINTER_PSH;
+    const psh = idealSolar ? SUMMER_PSH : (season === 'summer' ? SUMMER_PSH : WINTER_PSH);
     const orient = DTE.solar.orientationFactor[s.orientation] || 1.0;
     const dailyKwh = arrayKw * psh * DTE.solar.systemLoss * orient;
     return DTE.hourlySolarShape.map(p => p * dailyKwh);
@@ -188,9 +251,9 @@
 
   // ---------- Simulate one day ----------
   // Returns { hourly: [...24], dailyCost, dailyExportRevenue, gridImportByPeriod, batterySoc[] }
-  const simulateDay = (s, season, planId) => {
+  const simulateDay = (s, season, planId, opts = {}) => {
     const load = buildLoadDay(s, season);
-    const solar = buildSolarDay(s, season);
+    const solar = buildSolarDay(s, season, opts);
     const batteryCapacity = s.addBattery ? s.batteryCount * BATTERY_KWH_EACH : 0;
     let soc = batteryCapacity * 0.5; // start half full
 
@@ -320,9 +383,9 @@
   // Mix summer & winter daily costs: 4 summer months for D1.11/D1.13, 5 for D1.2.
   // We approximate annual = 122 summer days + 243 non-summer days for D1.11/D1.13,
   // and 153 / 212 for D1.2. Close enough.
-  const annualizeCost = (s, planId) => {
-    const summer = simulateDay(s, 'summer', planId);
-    const winter = simulateDay(s, 'winter', planId);
+  const annualizeCost = (s, planId, opts = {}) => {
+    const summer = simulateDay(s, 'summer', planId, opts);
+    const winter = simulateDay(s, 'winter', planId, opts);
     const summerDays = planId === 'D1.2' ? 153 : 122;
     const winterDays = 365 - summerDays;
     // Cool Currents: add the separate-meter cost back (~17¢ × 250 kWh/mo × 4 mo).
@@ -349,6 +412,7 @@
 
   // ---------- Render results ----------
   const render = () => {
+    syncSliderWithAdditions();
     const s = readState();
     const rec = recommendPlan(s);
 
@@ -370,7 +434,14 @@
     const baselineState = { ...s, addSolar: false, batteryCount: 0, addBattery: false };
     const baseline = annualizeCost(baselineState, s.currentPlan);
     const optimized = annualizeCost(s, rec.id);
-    const annualSavings = baseline.annual - optimized.annual;
+    // Ideal scenario: same calc but solar produces at summer quality year-round.
+    // Quantifies how much the Michigan winter shoulder costs on the solar side.
+    const optimizedIdeal = annualizeCost(s, rec.id, { idealSolar: true });
+    const annualSavings = baseline.annual - optimized.annual;        // realistic
+    const annualSavingsIdeal = baseline.annual - optimizedIdeal.annual;
+    const solarShortfallPct = annualSavingsIdeal > 0
+      ? Math.max(0, (annualSavingsIdeal - annualSavings) / annualSavingsIdeal) * 100
+      : 0;
 
     const eq = equipmentCost(s);
     const payback = eq.total > 0 && annualSavings > 0 ? eq.total / annualSavings : null;
@@ -422,7 +493,17 @@
         <div class="metric ${payback && payback < 15 ? 'good' : 'warn'}">
           <div class="metric-label">Payback Period</div>
           <div class="metric-value">${payback ? payback.toFixed(1) + ' yr' : '—'}</div>
-          <div class="metric-sub">${annualSavings > 0 ? fmtCurrency(annualSavings) + ' annual savings' : 'No savings vs baseline'}</div>
+          <div class="metric-sub">Based on realistic yearly savings</div>
+        </div>
+        <div class="metric ${annualSavings > 0 ? 'good' : 'warn'}">
+          <div class="metric-label">Yearly Savings — Realistic</div>
+          <div class="metric-value">${fmtCurrency(annualSavings)}</div>
+          <div class="metric-sub">Michigan's actual summer + winter solar mix</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Yearly Savings — Ideal</div>
+          <div class="metric-value">${fmtCurrency(annualSavingsIdeal)}</div>
+          <div class="metric-sub">If solar produced summer-quality year-round</div>
         </div>
         <div class="metric ${lifetimeSavings > 0 ? 'good' : 'warn'}">
           <div class="metric-label">25-Year Net Savings</div>
@@ -469,6 +550,14 @@
             <div>Baseline cost: <span class="val">${fmtCurrency2(baseline.winter.dailyCost)}</span></div>
           </div>
         </div>
+        ${s.addSolar && solarShortfallPct > 1 ? `
+          <p class="small text-dim" style="margin-top:.75rem">
+            <strong>Michigan winter shoulder:</strong> short December–February daylight reduces your solar
+            output by about <strong class="text-warning">${solarShortfallPct.toFixed(0)}%</strong> vs an
+            ideal summer-year-round baseline. That's the gap between the Realistic and Ideal yearly-savings
+            numbers above — and it's why battery arbitrage on D1.13 carries this system through winter.
+          </p>
+        ` : ''}
         <p class="small text-dim" style="margin-top:.75rem">
           Note: payback uses a conservative 3%/yr rate inflation. The projections page uses 5.5%/yr —
           that's the aggressive scenario justified by Michigan-specific data-center demand and grid hardening.
@@ -615,6 +704,14 @@
     if (!form) return;
     form.addEventListener('input', render);
     form.addEventListener('change', render);
+    // Preset buttons (e.g. 8-panel / 24-panel quick selects)
+    form.addEventListener('click', (e) => {
+      const target = e.target.closest('[data-preset-panels]');
+      if (!target) return;
+      e.preventDefault();
+      $('panelCount').value = target.dataset.presetPanels;
+      render();
+    });
     render();
   };
 

@@ -76,10 +76,10 @@
     <form class="calc-form" id="calc-form" onsubmit="return false;">
 
       <div class="field">
-        <label for="dailyKwh">Daily kWh usage</label>
-        <span class="help">Typical DTE home: 15–25 kWh/day</span>
+        <label for="dailyKwh">Daily kWh usage (total)</label>
+        <span class="help">Typical DTE home today: 15–25 kWh/day. The slider auto-bumps when you check loads below (EV, heat pump, etc.) so it reflects your <strong>projected total</strong>.</span>
         <div class="range-row">
-          <input type="range" id="dailyKwh" min="5" max="100" step="1" value="19">
+          <input type="range" id="dailyKwh" min="5" max="120" step="1" value="19">
           <span class="range-value" id="dailyKwhVal">19</span>
         </div>
       </div>
@@ -115,10 +115,14 @@
       <div class="field conditional" id="solarOpts">
         <label for="panelCount">Number of 400W panels</label>
         <div class="range-row">
-          <input type="range" id="panelCount" min="4" max="25" step="1" value="8">
+          <input type="range" id="panelCount" min="4" max="30" step="1" value="8">
           <span class="range-value" id="panelCountVal">8</span>
         </div>
-        <span class="help">Phono Solar 400W panels at $145 each via <a href="https://www.d2solardetroit.com/volunteer" target="_blank" rel="noopener nofollow">D2 Solar Detroit</a>.</span>
+        <div style="display:flex;gap:.5rem;margin-top:.4rem;flex-wrap:wrap">
+          <button type="button" class="btn btn-secondary" style="font-size:.8rem;padding:.25rem .6rem" data-preset-panels="8">Stage 2-Small (8)</button>
+          <button type="button" class="btn btn-secondary" style="font-size:.8rem;padding:.25rem .6rem" data-preset-panels="24">Stage 2-Large (24)</button>
+        </div>
+        <span class="help">Phono Solar 400W panels at $145 each via <a href="https://www.d2solardetroit.com/volunteer" target="_blank" rel="noopener nofollow">D2 Solar Detroit</a>. Two recommended sizes: <strong>8 panels (3.2 kW)</strong> for a baseline home, or <strong>24 panels (9.6 kW)</strong> for an electrified household.</span>
         <label for="orientation" style="margin-top:.5rem">Roof orientation</label>
         <select id="orientation">
           <option value="S" selected>South (optimum)</option>

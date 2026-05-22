@@ -114,6 +114,7 @@ const DTE = {
     { kw: 4.8, panels: 12, kwhLow: 5700, kwhHigh: 6500, best: 'Average household, ~19 kWh/day' },
     { kw: 6.4, panels: 16, kwhLow: 7600, kwhHigh: 8600, best: 'Household + mini-split' },
     { kw: 8.0, panels: 20, kwhLow: 9600, kwhHigh: 10800, best: 'Household + EV (light driving)' },
+    { kw: 9.6, panels: 24, kwhLow: 11500, kwhHigh: 13000, best: 'Stage 2-Large preset — household + EV + heat pump (recommended large)' },
     { kw: 10.0, panels: 25, kwhLow: 12000, kwhHigh: 13500, best: 'Household + EV + heat pump' },
   ],
 
@@ -299,16 +300,28 @@ const DTE = {
           payback: '~8–12 years house only, ~7–8 years with EV',
         },
         {
-          name: 'Stage 2 — Add Solar (with roof replacement)',
+          name: 'Stage 2-Small — Add Solar (8 panels, 3.2 kW)',
           components: [
             { component: 'Solar charge controller', model: 'Victron SmartSolar MPPT 250/100', price: 800 },
-            { component: 'Panels', model: '8× 400W', price: 1276 },
+            { component: 'Panels', model: '8× 400W Phono Solar — D2 Solar Detroit @ $145', price: 1160 },
             { component: 'Racking/wiring', model: 'Various', price: 500 },
           ],
-          total: 2576,
+          total: 2460,
           notes: 'Plugs into existing Cerbo GX. Dynamic ESS auto-incorporates solar. Nothing from Stage 1 wasted.',
           combinedAnnualSavings: '$900–1,100',
-          combinedPayback: '~8–9 years on $8,441 combined',
+          combinedPayback: '~8–9 years on $8,325 combined',
+        },
+        {
+          name: 'Stage 2-Large — Add Solar (24 panels, 9.6 kW)',
+          components: [
+            { component: 'Solar charge controllers', model: '2× Victron SmartSolar MPPT 250/100', price: 1600 },
+            { component: 'Panels', model: '24× 400W Phono Solar — D2 Solar Detroit @ $145', price: 3480 },
+            { component: 'Racking/wiring', model: 'Various (24-panel array)', price: 1000 },
+          ],
+          total: 6080,
+          notes: 'Triples the array. Annual production ~11,500 kWh. Best when EV or heat pump is on the horizon.',
+          combinedAnnualSavings: '$1,400–1,800',
+          combinedPayback: '~7–9 years on $11,945 combined',
         },
         {
           name: 'Stage 3 — Scale for EV + Heat Pump',
