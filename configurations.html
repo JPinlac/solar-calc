@@ -39,21 +39,28 @@
           <tr>
             <td><a href="#config-a"><strong>A</strong></a></td>
             <td><a href="#config-a">Battery-Only Arbitrage</a></td>
-            <td class="num">$9,769</td>
+            <td class="num">$7,364</td>
             <td>Renters, shaded roofs, pre-reroof</td>
-            <td>~14–18 yrs (battery only)</td>
+            <td>~10–14 yrs (battery only)</td>
           </tr>
           <tr>
             <td><a href="#config-b"><strong>B</strong></a></td>
-            <td><a href="#config-b">Solar + Battery — Standard Home</a></td>
-            <td class="num">$11,545</td>
+            <td><a href="#config-b">Solar + Battery — Standard Home (8 panels)</a></td>
+            <td class="num">$9,274</td>
             <td>Average DTE household (~19 kWh/day)</td>
-            <td>~13–14 yrs</td>
+            <td>~10–12 yrs</td>
+          </tr>
+          <tr>
+            <td><a href="#config-b2"><strong>B+</strong></a></td>
+            <td><a href="#config-b2">Solar + Battery — Larger Array (24 panels)</a></td>
+            <td class="num">$14,849</td>
+            <td>Electrified household / EV-ready</td>
+            <td>~9–11 yrs</td>
           </tr>
           <tr>
             <td><a href="#config-c"><strong>C</strong></a></td>
             <td><a href="#config-c">Future-Proof — Home + EV + Heat Pump</a></td>
-            <td class="num">$15,899</td>
+            <td class="num">$15,698</td>
             <td>3–5 yr electrification plan</td>
             <td>~8–10 yrs</td>
           </tr>
@@ -89,8 +96,9 @@
         </thead>
         <tbody>
           <tr><td>Inverter</td><td>EG4 12kPV Hybrid 48V</td><td class="num">$4,049</td></tr>
-          <tr><td>Battery</td><td>4× EG4 LL-S 48V 100Ah (19.2 kWh)</td><td class="num">$5,720</td></tr>
-          <tr><td colspan="2"><strong>Total</strong></td><td class="num"><strong class="text-accent">$9,769</strong></td></tr>
+          <tr><td>Battery</td><td>1× Docan Panda 51.2V (32 kWh)</td><td class="num">$2,755</td></tr>
+          <tr><td>Freight (Houston TX, one-time)</td><td>Freight delivery</td><td class="num">$560</td></tr>
+          <tr><td colspan="2"><strong>Total</strong></td><td class="num"><strong class="text-accent">$7,364</strong></td></tr>
         </tbody>
       </table>
     </div>
@@ -101,13 +109,17 @@
     hours. No solar interconnection, no roof work, no permitting beyond the inverter — a self-contained
     arbitrage box.</p>
 
+    <p class="small text-dim">Note: the EG4 12kPV is the all-in-one alternative to Config E's Victron stack —
+    simpler install, single-vendor warranty, but not stage-upgradeable. If you may add solar later, prefer
+    Configuration E.</p>
+
     <p><strong>Annual savings:</strong> $450–550 battery-only, $700+ with EV.<br>
-    <strong>Payback:</strong> ~14–18 years battery-only, ~10–12 years with EV.</p>
+    <strong>Payback:</strong> ~10–14 years battery-only, ~8–10 years with EV.</p>
   </section>
 
   <!-- Config B -->
   <section id="config-b">
-    <h2>Configuration B — Solar + Battery, Standard Home (~19 kWh/day)</h2>
+    <h2>Configuration B — Solar + Battery, Standard Home (~19 kWh/day, 8 panels)</h2>
     <p><strong>Best for:</strong> Average DTE household, ideally timed with a planned roof replacement so
     panels go on a fresh roof.</p>
 
@@ -118,10 +130,11 @@
         </thead>
         <tbody>
           <tr><td>Inverter</td><td>EG4 12kPV Hybrid 48V</td><td class="num">$4,049</td></tr>
-          <tr><td>Battery</td><td>4× EG4 LL-S 48V 100Ah (19.2 kWh)</td><td class="num">$5,720</td></tr>
-          <tr><td>Panels</td><td>8× 400W (3.2 kW array)</td><td class="num">$1,276</td></tr>
+          <tr><td>Battery</td><td>1× Docan Panda 51.2V (32 kWh)</td><td class="num">$2,755</td></tr>
+          <tr><td>Freight (Houston TX, one-time)</td><td>Freight delivery</td><td class="num">$560</td></tr>
+          <tr><td>Panels</td><td>8× 400W Phono Solar (3.2 kW) — D2 Solar Detroit</td><td class="num">$1,160</td></tr>
           <tr><td>Racking / wiring</td><td>Various</td><td class="num">$750</td></tr>
-          <tr><td colspan="2"><strong>Total</strong></td><td class="num"><strong class="text-accent">$11,545</strong></td></tr>
+          <tr><td colspan="2"><strong>Total</strong></td><td class="num"><strong class="text-accent">$9,274</strong></td></tr>
         </tbody>
       </table>
     </div>
@@ -133,7 +146,44 @@
     self-consumption — not exports — given DTE's low outflow rate.</p>
 
     <p><strong>Annual savings:</strong> $800–900.<br>
-    <strong>Payback:</strong> ~13–14 years. 25-year savings: ~$15,000+.</p>
+    <strong>Payback:</strong> ~10–12 years. 25-year savings: ~$18,000+.</p>
+  </section>
+
+  <!-- Config B+ : Larger Array -->
+  <section id="config-b2">
+    <h2>Configuration B+ — Solar + Battery, Larger Array (24 panels, ~9.6 kW)</h2>
+    <p><strong>Best for:</strong> Homes with bigger roofs (south-facing, ~400 sq ft of unshaded plane),
+    households already running or planning an EV / heat pump, and anyone who wants a single bigger Stage 2
+    install instead of returning later for more panels.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Model</th><th class="num">Price</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Inverter</td><td>EG4 12kPV Hybrid 48V</td><td class="num">$4,049</td></tr>
+          <tr><td>Battery</td><td>2× Docan Panda 51.2V (64 kWh)</td><td class="num">$5,510</td></tr>
+          <tr><td>Freight (Houston TX, one-time)</td><td>Freight delivery</td><td class="num">$560</td></tr>
+          <tr><td>Panels</td><td>24× 400W Phono Solar (9.6 kW) — D2 Solar Detroit</td><td class="num">$3,480</td></tr>
+          <tr><td>Racking / wiring</td><td>Various</td><td class="num">$1,250</td></tr>
+          <tr><td colspan="2"><strong>Total</strong></td><td class="num"><strong class="text-accent">$14,849</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small text-dim">If you stay with a single 32 kWh Panda (sufficient for a 19 kWh/day home without
+    heat pump): subtract $2,755 → <strong>$12,094</strong>. If you skip the extra battery and use the
+    Victron staged approach instead of EG4: see Configuration E + Stage 2-Large at <strong>$11,945</strong>.</p>
+
+    <h4>How it works</h4>
+    <p>The 9.6 kW array produces enough on a summer day to fully charge a 32 kWh battery AND meet daytime
+    household demand, with surplus available for EV charging or summer-peak export. In winter, the larger
+    array compensates for shorter days — keeping the battery topped up rather than relying on overnight grid
+    charging. With heat pump and EV both running, this is the array size that meaningfully reduces grid
+    dependence.</p>
+
+    <p><strong>Annual savings:</strong> $1,300–1,700.<br>
+    <strong>Payback:</strong> ~9–11 years. 25-year savings: ~$28,000+.</p>
   </section>
 
   <!-- Config C -->
@@ -148,22 +198,25 @@
           <tr><th>Component</th><th>Model</th><th class="num">Price</th></tr>
         </thead>
         <tbody>
-          <tr><td>Inverter</td><td>EG4 12kPV Hybrid 48V</td><td class="num">$4,049</td></tr>
-          <tr><td>Battery</td><td>5× EG4 LL-S 48V 100Ah (24 kWh)</td><td class="num">$7,150</td></tr>
-          <tr><td>Panels</td><td>20× 400W (8.0 kW array)</td><td class="num">$3,200</td></tr>
+          <tr><td>Inverter</td><td>EG4 18kPV Hybrid 48V (12 kW)</td><td class="num">$4,898</td></tr>
+          <tr><td>Battery</td><td>2× Docan Panda 51.2V (64 kWh)</td><td class="num">$5,510</td></tr>
+          <tr><td>Freight (Houston TX, one-time)</td><td>Freight delivery</td><td class="num">$560</td></tr>
+          <tr><td>Panels</td><td>24× 400W Phono Solar (9.6 kW) — D2 Solar Detroit</td><td class="num">$3,480</td></tr>
           <tr><td>Racking / wiring</td><td>Various</td><td class="num">$1,250</td></tr>
-          <tr><td colspan="2"><strong>Total</strong></td><td class="num"><strong class="text-accent">$15,899</strong></td></tr>
+          <tr><td colspan="2"><strong>Total</strong></td><td class="num"><strong class="text-accent">$15,698</strong></td></tr>
         </tbody>
       </table>
     </div>
 
     <h4>How it works</h4>
     <p>Built for the 50–70 kWh/day a fully electrified household consumes (home + EV + heat pump in winter).
-    Larger array sized for winter heat-pump production; oversized battery absorbs solar midday and discharges
-    against the long winter evening peak. EV charges overnight at super off-peak.</p>
+    The 9.6 kW array is sized for winter heat-pump production; the 64 kWh of Panda storage absorbs solar
+    midday and discharges against the long winter evening peak. EV charges directly from the grid at the
+    11.74¢ super off-peak rate (no battery cycling needed for EV) — leaving the battery available for the
+    rest of the home.</p>
 
     <p><strong>Annual savings:</strong> $1,500–2,000.<br>
-    <strong>Payback:</strong> ~8–10 years. 25-year savings: ~$30,000+.</p>
+    <strong>Payback:</strong> ~8–10 years. 25-year savings: ~$32,000+.</p>
   </section>
 
   <!-- Config D -->
@@ -228,6 +281,11 @@
     <strong>Stage 1 payback:</strong> ~8–12 years house only, ~7–8 years with EV.</p>
 
     <h3>Stage 2 — Add Solar (with roof replacement)</h3>
+    <p class="text-dim">Choose one of two array sizes. Both use the same Victron SmartSolar MPPT charge
+    controller architecture and feed into the existing Cerbo GX. Dynamic ESS auto-incorporates the new
+    solar source — nothing from Stage 1 is wasted or replaced.</p>
+
+    <h4>Stage 2-Small — 8 panels (3.2 kW)</h4>
     <div class="table-wrap">
       <table>
         <thead>
@@ -235,20 +293,41 @@
         </thead>
         <tbody>
           <tr><td>Solar charge controller</td><td>Victron SmartSolar MPPT 250/100</td><td class="num">$800</td></tr>
-          <tr><td>Panels</td><td>8× 400W</td><td class="num">$1,276</td></tr>
+          <tr><td>Panels</td><td>8× 400W Phono Solar — D2 Solar Detroit @ $145</td><td class="num">$1,160</td></tr>
           <tr><td>Racking / wiring</td><td>Various</td><td class="num">$500</td></tr>
-          <tr><td colspan="2"><strong>Stage 2 add</strong></td><td class="num"><strong class="text-accent">$2,576</strong></td></tr>
+          <tr><td colspan="2"><strong>Stage 2-Small add</strong></td><td class="num"><strong class="text-accent">$2,460</strong></td></tr>
         </tbody>
       </table>
     </div>
-    <p>Plugs into the existing Cerbo GX. Dynamic ESS auto-incorporates the new solar source — nothing from
-    Stage 1 is wasted or replaced.</p>
+    <p>Right-sized for a ~19 kWh/day home with no EV or heat pump yet. Annual production ~3,800 kWh —
+    most of which the household self-consumes; what overflows charges the battery.</p>
+
+    <h4>Stage 2-Large — 24 panels (9.6 kW)</h4>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Model</th><th class="num">Price</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Solar charge controller</td><td>2× Victron SmartSolar MPPT 250/100 (9.6 kW needs two)</td><td class="num">$1,600</td></tr>
+          <tr><td>Panels</td><td>24× 400W Phono Solar — D2 Solar Detroit @ $145</td><td class="num">$3,480</td></tr>
+          <tr><td>Racking / wiring</td><td>Various (24-panel array)</td><td class="num">$1,000</td></tr>
+          <tr><td colspan="2"><strong>Stage 2-Large add</strong></td><td class="num"><strong class="text-accent">$6,080</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Triples the array. Annual production ~11,500 kWh — enough to substantially offset an EV (12 kWh/day)
+    or a winter heat pump in addition to baseline household load. Best paired with a second Docan Panda when
+    Stage 3 EV / heat pump arrive.</p>
 
     <div class="callout success">
       <h4>Stage 1 + Stage 2 combined</h4>
-      <p><strong>Combined cost:</strong> $5,865 + $2,576 = <strong>$8,441</strong>.<br>
-      <strong>Combined annual savings:</strong> $900–1,100.<br>
-      <strong>Combined payback:</strong> ~8–9 years on $8,441 total.</p>
+      <p>
+        <strong>Small (3.2 kW):</strong> $5,865 + $2,460 = <strong>$8,325</strong>. ~$900–1,100/yr savings.
+        Payback ~8–9 yrs.<br>
+        <strong>Large (9.6 kW):</strong> $5,865 + $6,080 = <strong>$11,945</strong>. ~$1,400–1,800/yr savings.
+        Payback ~7–9 yrs (faster with EV).
+      </p>
     </div>
 
     <h3>Stage 3 — Scale for EV + Heat Pump</h3>

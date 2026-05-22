@@ -36,6 +36,57 @@
   let chart = null;
   let activeSeason = 'summer';
 
+  // Annual-average daily kWh contribution from each load-affecting addition.
+  // The daily-kWh slider represents TOTAL household load including these — when
+  // a checkbox toggles, the slider is bumped by the corresponding value below.
+  // Mini-split and heat pump are seasonal; we use a weighted annual average so
+  // the slider reads like a year-round daily figure.
+  const ADDITION_KWH = {
+    ev: (state) => state.evMiles / EV_EFFICIENCY,                  // year-round
+    ewh: () => EWH_KWH,                                            // year-round
+    mini: () => 3.5,                                               // ~avg of 4 (summer) / 3 (winter)
+    hp: () => HEAT_PUMP_WINTER_KWH * 0.7,                          // winter-weighted annual avg
+  };
+
+  // Tracks the addition contributions currently baked into the slider, so we
+  // know exactly how much to add or subtract when a checkbox/miles value changes.
+  let prevAdditions = null;
+
+  // Sync the daily-kWh slider to reflect newly-added or removed loads.
+  // Runs at the top of render() before reading state, so the read-back sees
+  // the bumped value. User-initiated drags of the slider itself are preserved
+  // (delta is zero in that case because additions didn't change).
+  const syncSliderWithAdditions = () => {
+    const checked = {
+      ev: $('addEv').checked,
+      ewh: $('addEwh').checked,
+      mini: $('addMiniSplit').checked,
+      hp: $('addHeatPump').checked,
+    };
+    const evMiles = +$('evMiles').value;
+    const additions = {
+      ev: checked.ev ? ADDITION_KWH.ev({ evMiles }) : 0,
+      ewh: checked.ewh ? ADDITION_KWH.ewh() : 0,
+      mini: checked.mini ? ADDITION_KWH.mini() : 0,
+      hp: checked.hp ? ADDITION_KWH.hp() : 0,
+    };
+    if (prevAdditions === null) {
+      prevAdditions = additions;
+      return;
+    }
+    const delta = (additions.ev - prevAdditions.ev) +
+                  (additions.ewh - prevAdditions.ewh) +
+                  (additions.mini - prevAdditions.mini) +
+                  (additions.hp - prevAdditions.hp);
+    prevAdditions = additions;
+    if (Math.abs(delta) < 0.05) return;
+    const slider = $('dailyKwh');
+    const min = +slider.min;
+    const max = +slider.max;
+    const newVal = Math.max(min, Math.min(max, +slider.value + delta));
+    slider.value = Math.round(newVal);
+  };
+
   // ---------- Read form state ----------
   // Battery count and inverter tier are NOT user inputs anymore — both are
   // sized automatically from the load profile (see autoSizeBattery / autoSizeInverter).
@@ -124,6 +175,16 @@
   // ---------- Build hourly load profile for a representative day ----------
   const buildLoadDay = (s, season) => {
     let baseDaily = s.dailyKwh;
+
+    // The slider value already includes annual-average kWh for each checked
+    // addition (see syncSliderWithAdditions). Subtract those contributions here
+    // before applying the residential hourly curve, then re-layer the additions
+    // at their specific hours below. Otherwise the additions get double-counted.
+    if (s.addEv) baseDaily -= ADDITION_KWH.ev(s);
+    if (s.addEwh) baseDaily -= ADDITION_KWH.ewh();
+    if (s.addMiniSplit) baseDaily -= ADDITION_KWH.mini();
+    if (s.addHeatPump) baseDaily -= ADDITION_KWH.hp();
+    baseDaily = Math.max(2, baseDaily);
 
     // Cool Currents: subtract ~250 kWh/mo summer AC from main meter.
     if (s.coolCurrents && season === 'summer') {
@@ -349,6 +410,7 @@
 
   // ---------- Render results ----------
   const render = () => {
+    syncSliderWithAdditions();
     const s = readState();
     const rec = recommendPlan(s);
 
@@ -615,6 +677,14 @@
     if (!form) return;
     form.addEventListener('input', render);
     form.addEventListener('change', render);
+    // Preset buttons (e.g. 8-panel / 24-panel quick selects)
+    form.addEventListener('click', (e) => {
+      const target = e.target.closest('[data-preset-panels]');
+      if (!target) return;
+      e.preventDefault();
+      $('panelCount').value = target.dataset.presetPanels;
+      render();
+    });
     render();
   };
 
