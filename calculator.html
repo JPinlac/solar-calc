@@ -104,11 +104,10 @@
       <div class="field">
         <label>Planned additions</label>
         <div class="check-list">
-          <label><input type="checkbox" id="addSolar"> Solar</label>
-          <label><input type="checkbox" id="addBattery"> Battery</label>
+          <label><input type="checkbox" id="addSolar"> Solar (400W Phono panels @ $145)</label>
           <label><input type="checkbox" id="addMiniSplit"> Mini-split</label>
           <label><input type="checkbox" id="addEv"> EV</label>
-          <label><input type="checkbox" id="addHeatPump"> Heat pump</label>
+          <label><input type="checkbox" id="addHeatPump"> Heat pump (replaces gas furnace)</label>
           <label><input type="checkbox" id="addEwh"> Electric water heater</label>
         </div>
       </div>
@@ -119,6 +118,7 @@
           <input type="range" id="panelCount" min="4" max="25" step="1" value="8">
           <span class="range-value" id="panelCountVal">8</span>
         </div>
+        <span class="help">Phono Solar 400W panels at $145 each via <a href="https://www.d2solardetroit.com/volunteer" target="_blank" rel="noopener nofollow">D2 Solar Detroit</a>.</span>
         <label for="orientation" style="margin-top:.5rem">Roof orientation</label>
         <select id="orientation">
           <option value="S" selected>South (optimum)</option>
@@ -127,15 +127,6 @@
           <option value="E">East</option>
           <option value="W">West</option>
         </select>
-      </div>
-
-      <div class="field conditional" id="batteryOpts">
-        <label for="batteryCount">Number of EG4 LL-S batteries</label>
-        <div class="range-row">
-          <input type="range" id="batteryCount" min="1" max="8" step="1" value="4">
-          <span class="range-value" id="batteryCountVal">4</span>
-        </div>
-        <span class="help">Capacity: <span id="batteryKwh" class="text-accent">19.2</span> kWh (4.8 kWh per battery)</span>
       </div>
 
       <div class="field conditional" id="evOpts">

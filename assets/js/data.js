@@ -118,24 +118,42 @@ const DTE = {
   ],
 
   // ---------- Equipment catalog ----------
+  // Link policy: only stable URLs. Victron product pages are linked directly
+  // (manufacturer site, stable). EG4 links go to signaturesolar.com search (the
+  // retailer cited by the master plan; search endpoint is stable even if product
+  // slugs change). Docan Panda has no established US retailer page, so it links
+  // to a search query.
   equipment: {
     inverters: [
-      { id: 'victron-mp2-3k', model: '2× Victron MultiPlus-II 48/3000', voltage: '48V', output: '6kW split phase', pv: 'External MPPT', price: 2200, bestFor: 'Staged builds, battery-first, Dynamic ESS' },
-      { id: 'victron-mp2-5k', model: '2× Victron MultiPlus-II 48/5000', voltage: '48V', output: '10kW split phase', pv: 'External MPPT', price: 3620, bestFor: 'Larger homes, heavy loads, staged' },
-      { id: 'eg4-12kpv', model: 'EG4 12kPV Hybrid', voltage: '48V', output: '8kW', pv: '12kW built-in', price: 4049, bestFor: 'All-in-one, simple install' },
-      { id: 'eg4-18kpv', model: 'EG4 18kPV Hybrid', voltage: '48V', output: '12kW', pv: '18kW built-in', price: 4898, bestFor: 'Large homes, heavy loads' },
-      { id: 'growatt-sph', model: 'Growatt SPH 10000', voltage: 'HV (400V)', output: '10kW', pv: '15kW', price: 2816, bestFor: 'HV battery systems (not DIY recommended)' },
+      { id: 'victron-mp2-3k', model: '2× Victron MultiPlus-II 48/3000', voltage: '48V', output: '6kW split phase', pv: 'External MPPT', price: 2200, bestFor: 'Staged builds, battery-first, Dynamic ESS',
+        link: 'https://www.victronenergy.com/inverters-chargers/multiplus-ii', linkLabel: 'Victron' },
+      { id: 'victron-mp2-5k', model: '2× Victron MultiPlus-II 48/5000', voltage: '48V', output: '10kW split phase', pv: 'External MPPT', price: 3620, bestFor: 'Larger homes, heavy loads, staged',
+        link: 'https://www.victronenergy.com/inverters-chargers/multiplus-ii', linkLabel: 'Victron' },
+      { id: 'eg4-12kpv', model: 'EG4 12kPV Hybrid', voltage: '48V', output: '8kW', pv: '12kW built-in', price: 4049, bestFor: 'All-in-one, simple install',
+        link: 'https://signaturesolar.com/?s=EG4+12kPV', linkLabel: 'Signature Solar' },
+      { id: 'eg4-18kpv', model: 'EG4 18kPV Hybrid', voltage: '48V', output: '12kW', pv: '18kW built-in', price: 4898, bestFor: 'Large homes, heavy loads',
+        link: 'https://signaturesolar.com/?s=EG4+18kPV', linkLabel: 'Signature Solar' },
+      { id: 'growatt-sph', model: 'Growatt SPH 10000', voltage: 'HV (400V)', output: '10kW', pv: '15kW', price: 2816, bestFor: 'HV battery systems (not DIY recommended)',
+        link: 'https://en.growatt.com/products', linkLabel: 'Growatt' },
     ],
     batteries: [
-      { id: 'docan-panda', model: 'Docan Panda', voltage: '51.2V', kwh: 32, costPerKwh: 86, cycles: 8000, price: 2755, shipping: 560, bestFor: 'Best value, large capacity, Victron compatible' },
-      { id: 'eg4-lls', model: 'EG4 LL-S', voltage: '48V', kwh: 4.8, costPerKwh: 298, cycles: 7000, price: 1430, shipping: 0, bestFor: 'Modular 48V systems, DIY' },
-      { id: 'lg-16h', model: 'LG 16H Prime', voltage: '400V HV', kwh: 16, costPerKwh: 172, cycles: 8000, price: 2750, shipping: 0, bestFor: 'HV systems only, max brand reliability' },
+      { id: 'docan-panda', model: 'Docan Panda', voltage: '51.2V', kwh: 32, costPerKwh: 86, cycles: 8000, price: 2755, shipping: 560, bestFor: 'Best value, large capacity, Victron compatible',
+        link: 'https://www.google.com/search?q=Docan+Panda+32kWh+51.2V+LiFePO4+battery', linkLabel: 'Find a seller' },
+      { id: 'eg4-lls', model: 'EG4 LL-S', voltage: '48V', kwh: 4.8, costPerKwh: 298, cycles: 7000, price: 1430, shipping: 0, bestFor: 'Modular 48V systems, DIY',
+        link: 'https://signaturesolar.com/?s=EG4+LL-S', linkLabel: 'Signature Solar' },
+      { id: 'lg-16h', model: 'LG 16H Prime', voltage: '400V HV', kwh: 16, costPerKwh: 172, cycles: 8000, price: 2750, shipping: 0, bestFor: 'HV systems only, max brand reliability',
+        link: 'https://www.lg.com/us/business/ess', linkLabel: 'LG ESS' },
     ],
     panels: {
-      sweetSpot: '400W panels at ~$160 each (bulk/sale pricing)',
-      example: '8× 400W for $1,276 shipped (CCCell brand)',
+      sweetSpot: '400W Phono Solar panels at $145 each (D2 Solar Detroit, local pickup)',
+      example: '8× 400W Phono for $1,160 — best price in the DTE service area',
       specs: 'efficiency >20%, 25-year warranty, bifacial preferred',
-      pricePerPanel: 160,
+      pricePerPanel: 145,
+      link: 'https://www.d2solardetroit.com/volunteer',
+      linkLabel: 'D2 Solar Detroit',
+      alternates: [
+        { source: 'Signature Solar (mail order)', priceEach: 160, link: 'https://signaturesolar.com/?s=400W+solar+panel' },
+      ],
     },
     comfort: [
       { equipment: 'Mini-split 12K BTU', purpose: 'Zone cooling/heating + supplemental heat pump in winter', cost: '$700–1,500', energy: '500–600W draw' },
@@ -146,6 +164,10 @@ const DTE = {
       cerboGx: 350,
       victronMppt250_100: 800,
       rackingPerArray: 500,
+      links: {
+        cerboGx: { label: 'Cerbo GX', link: 'https://www.victronenergy.com/panel-systems-remote-monitoring/cerbo-gx' },
+        smartSolarMppt: { label: 'SmartSolar MPPT 250/100', link: 'https://www.victronenergy.com/solar-charge-controllers/smartsolar-mppt-250-100' },
+      },
     },
   },
 
