@@ -327,7 +327,7 @@ const DTE = {
           name: 'Stage 3 — Scale for EV + Heat Pump',
           components: [
             { component: 'Additional inverters', model: '2× Victron MultiPlus-II 48/5000 parallel', price: 3620 },
-            { component: 'Additional solar', model: '12× 400W panels + MPPT + racking', price: 3000 },
+            { component: 'Additional solar', model: '24× 400W Phono panels + 2× SmartSolar MPPT 250/100 + racking', price: 6080 },
             { component: 'Additional battery (optional)', model: 'Second Docan Panda 32kWh', price: 3315 },
           ],
         },
