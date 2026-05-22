@@ -3,29 +3,294 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DTE Solar & Battery Plan — Southeast Michigan</title>
-<meta name="description" content="Educate DTE Energy residential customers in Southeast Michigan that solar+battery is financially feasible today — even without the federal tax credit.">
+<title>DTE Solar & Battery Plan — Up to $55,000 in 25-Year Savings, Built in Stages</title>
+<meta name="description" content="Solar and battery still pay off in Southeast Michigan without the federal tax credit. Stage the investment: battery arbitrage first, solar second, scale for EV and heat pump as life requires. Plus whole-home backup and a hedge against DTE rate hikes.">
 <link rel="stylesheet" href="assets/css/main.css">
+<style>
+  /* Hero number strip — unique to the landing page */
+  .lifetime-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .lifetime-tile {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    text-align: left;
+  }
+  .lifetime-tile .tile-label {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--color-text-dim);
+  }
+  .lifetime-tile .tile-big {
+    font-family: var(--font-mono);
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: var(--color-success);
+    line-height: 1.1;
+    margin-top: .25rem;
+  }
+  .lifetime-tile .tile-sub {
+    font-size: .9rem;
+    color: var(--color-text-dim);
+    margin-top: .25rem;
+  }
+  .lifetime-tile.cost .tile-big { color: var(--color-accent); }
+
+  /* Stage ladder */
+  .stage-ladder {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+  @media (max-width: 860px) {
+    .stage-ladder { grid-template-columns: 1fr; }
+  }
+  .stage-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .stage-card .stage-num {
+    position: absolute;
+    top: -14px;
+    left: 1.25rem;
+    background: var(--color-accent);
+    color: #1a1106;
+    padding: 2px 12px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: .85rem;
+    letter-spacing: .04em;
+  }
+  .stage-card h3 { margin-top: .5rem; color: var(--color-text); }
+  .stage-card .stage-cost {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    margin: .5rem 0 .25rem;
+  }
+  .stage-card .stage-savings {
+    font-size: .95rem;
+    color: var(--color-success);
+    font-weight: 600;
+    margin-bottom: .75rem;
+  }
+  .stage-card .stage-body { flex: 1; }
+  .stage-card .stage-bonus {
+    margin-top: 1rem;
+    padding-top: .75rem;
+    border-top: 1px dashed var(--color-border);
+    font-size: .85rem;
+    color: var(--color-text-dim);
+  }
+  .stage-card .stage-bonus strong { color: var(--color-battery); }
+
+  /* Benefit grid */
+  .benefit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+  }
+  .benefit-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+  }
+  .benefit-card .b-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+  .benefit-card h4 {
+    margin: .25rem 0;
+    color: var(--color-text);
+    font-size: 1.05rem;
+  }
+  .benefit-card p {
+    color: var(--color-text-dim);
+    font-size: .92rem;
+    margin: 0;
+  }
+</style>
 </head>
 <body>
 <div id="site-header"></div>
 
 <section class="hero">
   <div class="container">
-    <h1>Solar &amp; Battery Still Pays Off in Michigan — Without the Tax Credit</h1>
+    <h1>Up to $55,000 in 25-Year Savings — Without the Federal Tax Credit</h1>
     <p class="lede">
-      The 30% federal solar credit was eliminated on January 1, 2026. Every number on this site assumes
-      <strong>zero federal incentive</strong>. The economics still work for DTE residential customers
-      in Southeast Michigan — driven by rate arbitrage on the Overnight Savers plan and self-consumption against rising rates.
+      Solar + battery still pays off for DTE residential customers in Southeast Michigan. The economics
+      work on rate arbitrage and self-consumption alone — no Section 25D credit required. Stage the
+      investment: battery first (~$5,865), solar second (~$2,576 more), scale later as you add an EV or
+      a heat pump. <strong>Get whole-home backup as a free side benefit.</strong>
     </p>
-    <div class="hero-cta">
-      <a class="btn" href="calculator.html">Run the calculator →</a>
-      <a class="btn btn-secondary" href="learn/why-michigan.html">Why this works</a>
+
+    <div class="lifetime-strip">
+      <div class="lifetime-tile cost">
+        <div class="tile-label">Stage 1 — Battery</div>
+        <div class="tile-big">$5,865</div>
+        <div class="tile-sub">Whole-home backup + arbitrage. <strong class="text-success">~$13,000 net @ 25yr</strong></div>
+      </div>
+      <div class="lifetime-tile cost">
+        <div class="tile-label">Stage 1 + 2 — + Solar</div>
+        <div class="tile-big">$8,441</div>
+        <div class="tile-sub">Combined cost. <strong class="text-success">~$20,500 net @ 15yr</strong> / <strong class="text-success">~$55,000 @ 25yr</strong></div>
+      </div>
+      <div class="lifetime-tile">
+        <div class="tile-label">Payback</div>
+        <div class="tile-big">~6 yrs</div>
+        <div class="tile-sub">Full system with 2 EVs. House-only ~10–11 yrs.</div>
+      </div>
+      <div class="lifetime-tile">
+        <div class="tile-label">Battery cycle life</div>
+        <div class="tile-big">~22 yrs</div>
+        <div class="tile-sub">8,000 cycles @ ~1 cycle/day. Saves through ~2048.</div>
+      </div>
     </div>
+
+    <div class="hero-cta" style="margin-top: 2rem;">
+      <a class="btn" href="calculator.html">Run the calculator →</a>
+      <a class="btn btn-secondary" href="#stages">See the staged path</a>
+    </div>
+    <p class="small text-dim" style="margin-top: 1rem;">
+      All figures assume <strong>zero federal incentive</strong> and 5.5% annual DTE rate inflation.
+      <a href="projections.html">See the projection math.</a>
+    </p>
   </div>
 </section>
 
 <main class="container page">
+
+  <section id="stages">
+    <h2>Stage Your Investment — Nothing Gets Thrown Away</h2>
+    <p class="text-dim">
+      The recommended path is built around <strong>Victron + Docan Panda</strong>. Each stage is
+      independently useful and Stage 1 components are still in service in Stage 3. You don't have to
+      commit to a full system on day one.
+    </p>
+
+    <div class="stage-ladder">
+      <article class="stage-card">
+        <span class="stage-num">STAGE 1</span>
+        <h3>Battery Arbitrage</h3>
+        <div class="stage-cost">$5,865</div>
+        <div class="stage-savings">~$450–700 / year saved</div>
+        <div class="stage-body">
+          <p class="small text-dim">2× Victron MultiPlus-II 48/3000 (split phase) + Cerbo GX + Docan Panda 32 kWh battery + freight.</p>
+          <p class="small">Switch to <strong>D1.13 Overnight Savers</strong>. Battery charges at 11.74¢ super off-peak (1am–7am), discharges during peak (35.56¢) and off-peak (25.46¢) hours. Dynamic ESS handles the timing automatically.</p>
+        </div>
+        <div class="stage-bonus">
+          <strong>Side benefit:</strong> whole-home backup power during DTE outages.
+          32 kWh covers a typical home for ~1.5 days off-grid.
+        </div>
+      </article>
+
+      <article class="stage-card">
+        <span class="stage-num">STAGE 2</span>
+        <h3>Add Solar (with roof replacement)</h3>
+        <div class="stage-cost">+$2,576</div>
+        <div class="stage-savings">~$900–1,100 / year combined</div>
+        <div class="stage-body">
+          <p class="small text-dim">Victron SmartSolar MPPT 250/100 + 8× 400W panels + racking. Plugs into the existing Cerbo GX.</p>
+          <p class="small">Solar charges the battery during the day for free instead of buying 11.74¢ overnight grid power. Sized to <strong>maximize self-consumption</strong>, not to oversize for poor 7.75¢ DG export rates.</p>
+        </div>
+        <div class="stage-bonus">
+          <strong>Combined:</strong> $8,441 total, ~8–9 year payback, ~$20,500 net by year 15.
+        </div>
+      </article>
+
+      <article class="stage-card">
+        <span class="stage-num">STAGE 3</span>
+        <h3>Scale for EV + Heat Pump</h3>
+        <div class="stage-cost">+$3,000 – $9,900</div>
+        <div class="stage-savings">~$1,500–2,000 / year combined</div>
+        <div class="stage-body">
+          <p class="small text-dim">Optionally: 2× Victron MultiPlus-II 48/5000 in parallel, 12 more panels + MPPT + racking, second Docan Panda.</p>
+          <p class="small">An EV charging at the 11.74¢ super off-peak rate is <strong>~3.4¢/mile</strong> — cheaper than any gas car. Heat pump replaces gas furnace efficiently. Modular: add what you need, when you need it.</p>
+        </div>
+        <div class="stage-bonus">
+          <strong>Side benefit:</strong> resale and electrification-readiness for the next owner.
+        </div>
+      </article>
+    </div>
+
+    <p class="text-center mt-3">
+      <a class="btn btn-secondary" href="configurations.html#config-e">Full staged-build breakdown →</a>
+    </p>
+  </section>
+
+  <section>
+    <h2>Side Benefits Beyond the Savings</h2>
+    <p class="text-dim">
+      The dollar-payback case stands on its own. These are the reasons people <em>actually</em> install systems —
+      and they don't show up on the calculator.
+    </p>
+
+    <div class="benefit-grid">
+      <article class="benefit-card">
+        <div class="b-icon">🔌</div>
+        <h4>Whole-Home Backup</h4>
+        <p>The same battery that does rate arbitrage all day is your generator when DTE goes down. A 32 kWh Panda runs a typical home ~1.5 days off-grid. Silent, no fuel, no maintenance, no carbon monoxide.</p>
+      </article>
+
+      <article class="benefit-card">
+        <div class="b-icon">📈</div>
+        <h4>Hedge Against Rate Hikes</h4>
+        <p>DTE rates climbed ~3.4% per year for the last decade and are accelerating. Every year the arbitrage spread grows and your battery becomes more valuable. <a href="projections.html">See the 2026–2036 projections.</a></p>
+      </article>
+
+      <article class="benefit-card">
+        <div class="b-icon">🚗</div>
+        <h4>EV-Ready From Day One</h4>
+        <p>Stage 1 puts you on D1.13. Any EV you buy from that point forward charges at 11.74¢/kWh — the equivalent of ~3.4¢/mile vs ~12¢/mile in a gas car. No system changes required.</p>
+      </article>
+
+      <article class="benefit-card">
+        <div class="b-icon">🤫</div>
+        <h4>Silent, Fuel-Free</h4>
+        <p>A 32 kWh Panda + Victron inverter is a quieter, lower-maintenance, no-fuel-storage alternative to a propane or natural-gas standby generator — and unlike a generator, it earns money every day it's not in an outage.</p>
+      </article>
+
+      <article class="benefit-card">
+        <div class="b-icon">🏡</div>
+        <h4>Resale Value Boost</h4>
+        <p>Homes with installed solar and battery storage trade at a premium in Southeast Michigan's increasingly electrification-aware market. Buyers will price in the avoided rate exposure even if they don't compute it themselves.</p>
+      </article>
+
+      <article class="benefit-card">
+        <div class="b-icon">🌱</div>
+        <h4>Cleaner Energy Mix</h4>
+        <p>Self-consumed solar displaces grid kWh that still includes coal-plant contribution during peak hours. The grid is decarbonizing slowly; your roof can decarbonize faster.</p>
+      </article>
+
+      <article class="benefit-card">
+        <div class="b-icon">🔧</div>
+        <h4>DIY-Maintainable</h4>
+        <p>48V architecture is below typical shock-hazard voltage. You can add inverters, swap batteries, expand solar, and replace components yourself over the system's 20+ year life. No installer lock-in.</p>
+      </article>
+
+      <article class="benefit-card">
+        <div class="b-icon">⚙️</div>
+        <h4>Automated by Dynamic ESS</h4>
+        <p>Victron's Dynamic ESS handles the charge/discharge timing automatically against the D1.13 rate schedule. You don't manually toggle the battery — the system optimizes every hour.</p>
+      </article>
+    </div>
+  </section>
 
   <section>
     <h2>Three Levers DTE Customers Can Pull Today</h2>
@@ -36,7 +301,7 @@
       </article>
       <article class="card">
         <h3><span class="tag tag-battery">Battery</span> Arbitrage First</h3>
-        <p>A 32 kWh Docan Panda + Victron inverter setup costs <strong>~$5,865</strong>. It pays for itself on rate arbitrage alone — no solar required. Ideal for renters with permission, shaded roofs, or as Stage 1 of a phased build.</p>
+        <p>A 32 kWh Docan Panda + Victron inverter setup costs <strong>~$5,865</strong>. It pays for itself on rate arbitrage alone — no solar required. Also gives you whole-home backup during outages. Ideal for renters with permission, shaded roofs, or as Stage 1 of a phased build.</p>
       </article>
       <article class="card">
         <h3><span class="tag tag-solar">Solar</span> Right-Sized for Self-Use</h3>
@@ -66,7 +331,7 @@
       </a>
       <a class="card" href="learn/equipment.html">
         <h3>Equipment Guide</h3>
-        <p class="text-dim">Inverters (Victron vs EG4 vs Growatt), batteries ($86/kWh Docan Panda vs $298/kWh EG4), panels, and comfort equipment.</p>
+        <p class="text-dim">Inverters (Victron vs EG4 vs Growatt), batteries ($86/kWh Docan Panda vs $298/kWh EG4), panels, comfort equipment — with retailer links.</p>
       </a>
       <a class="card" href="learn/stacking-strategy.html">
         <h3>The Stacking Strategy</h3>

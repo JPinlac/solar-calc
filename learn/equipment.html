@@ -100,6 +100,27 @@
   </section>
 
   <section>
+    <h2>Victron Accessories (for staged builds)</h2>
+    <p>
+      The Victron MultiPlus-II inverter is the chassis; these two accessories complete a working
+      Stage 1 (battery-only) and Stage 2 (add solar) build. Both are stable, supported Victron parts
+      readily available from US distributors.
+    </p>
+    <div class="grid" id="accessories-grid">
+      <div class="card">
+        <h3>Victron Cerbo GX</h3>
+        <p class="text-dim">System controller + monitoring brain. Runs Dynamic ESS for automatic rate-based charge/discharge.</p>
+        <p><strong>~$350</strong></p>
+      </div>
+      <div class="card">
+        <h3>Victron SmartSolar MPPT 250/100</h3>
+        <p class="text-dim">Solar charge controller. Required to add a PV array to a MultiPlus-II Stage 2 build.</p>
+        <p><strong>~$800</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <section>
     <h2>Comfort Equipment</h2>
     <p>
       Comfort equipment is often the highest-ROI part of the stack on a per-dollar basis — not because
@@ -189,12 +210,19 @@
       return '$' + Number(n).toLocaleString(undefined, { maximumFractionDigits: 0 });
     }
 
+    function modelCell(item) {
+      if (!item.link) return '<td>' + item.model + '</td>';
+      return '<td>' + item.model +
+        ' <a class="buy-link" href="' + item.link + '" target="_blank" rel="noopener nofollow">' +
+        (item.linkLabel || 'Shop') + ' ↗</a></td>';
+    }
+
     // Inverters
     var invTbody = document.querySelector('#inverters-table tbody');
     if (invTbody && eq.inverters) {
       invTbody.innerHTML = eq.inverters.map(function (i) {
         return '<tr>' +
-          '<td>' + i.model + '</td>' +
+          modelCell(i) +
           '<td>' + i.voltage + '</td>' +
           '<td>' + i.output + '</td>' +
           '<td>' + i.pv + '</td>' +
@@ -209,7 +237,7 @@
     if (batTbody && eq.batteries) {
       batTbody.innerHTML = eq.batteries.map(function (b) {
         return '<tr>' +
-          '<td>' + b.model + '</td>' +
+          modelCell(b) +
           '<td>' + b.voltage + '</td>' +
           '<td class="num">' + b.kwh + '</td>' +
           '<td class="num">$' + b.costPerKwh + '</td>' +
@@ -223,6 +251,9 @@
     // Panels
     var panelsCard = document.getElementById('panels-card');
     if (panelsCard && eq.panels) {
+      var panelsBuy = eq.panels.link
+        ? '<p class="mt-2"><a class="btn btn-secondary" href="' + eq.panels.link + '" target="_blank" rel="noopener nofollow">Browse 400W panels at ' + (eq.panels.linkLabel || 'retailer') + ' ↗</a></p>'
+        : '';
       panelsCard.innerHTML =
         '<h3>The 400W Sweet Spot</h3>' +
         '<p><strong>Sweet spot:</strong> ' + eq.panels.sweetSpot + '</p>' +
@@ -231,7 +262,26 @@
         '<p class="small text-dim mt-2">At roughly $' + eq.panels.pricePerPanel + ' per panel, an 8-panel ' +
         '3.2 kW array costs around $' + (eq.panels.pricePerPanel * 8).toLocaleString() + ' for modules ' +
         'alone — racking, wire, and the MPPT controller are additional. Bifacial panels are preferred for ' +
-        'their slightly better winter performance on snow-covered roofs reflecting light to the rear side.</p>';
+        'their slightly better winter performance on snow-covered roofs reflecting light to the rear side.</p>' +
+        panelsBuy;
+    }
+
+    // Accessories — append shop links to the cards already rendered statically
+    var accLinks = eq.accessories && eq.accessories.links;
+    if (accLinks) {
+      var cards = document.querySelectorAll('#accessories-grid .card');
+      var keyOrder = ['cerboGx', 'smartSolarMppt'];
+      cards.forEach(function (card, idx) {
+        var info = accLinks[keyOrder[idx]];
+        if (!info) return;
+        var a = document.createElement('a');
+        a.className = 'buy-link';
+        a.href = info.link;
+        a.target = '_blank';
+        a.rel = 'noopener nofollow';
+        a.textContent = 'View at Victron ↗';
+        card.appendChild(a);
+      });
     }
 
     // Comfort
