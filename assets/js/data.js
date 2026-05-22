@@ -145,12 +145,15 @@ const DTE = {
         link: 'https://www.lg.com/us/business/ess', linkLabel: 'LG ESS' },
     ],
     panels: {
-      sweetSpot: '400W panels at ~$160 each (bulk/sale pricing)',
-      example: '8× 400W for $1,276 shipped (CCCell brand)',
+      sweetSpot: '400W Phono Solar panels at $145 each (D2 Solar Detroit, local pickup)',
+      example: '8× 400W Phono for $1,160 — best price in the DTE service area',
       specs: 'efficiency >20%, 25-year warranty, bifacial preferred',
-      pricePerPanel: 160,
-      link: 'https://signaturesolar.com/?s=400W+solar+panel',
-      linkLabel: 'Signature Solar',
+      pricePerPanel: 145,
+      link: 'https://www.d2solardetroit.com/volunteer',
+      linkLabel: 'D2 Solar Detroit',
+      alternates: [
+        { source: 'Signature Solar (mail order)', priceEach: 160, link: 'https://signaturesolar.com/?s=400W+solar+panel' },
+      ],
     },
     comfort: [
       { equipment: 'Mini-split 12K BTU', purpose: 'Zone cooling/heating + supplemental heat pump in winter', cost: '$700–1,500', energy: '500–600W draw' },

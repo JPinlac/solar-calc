@@ -252,17 +252,21 @@
     var panelsCard = document.getElementById('panels-card');
     if (panelsCard && eq.panels) {
       var panelsBuy = eq.panels.link
-        ? '<p class="mt-2"><a class="btn btn-secondary" href="' + eq.panels.link + '" target="_blank" rel="noopener nofollow">Browse 400W panels at ' + (eq.panels.linkLabel || 'retailer') + ' ↗</a></p>'
+        ? '<p class="mt-2"><a class="btn" href="' + eq.panels.link + '" target="_blank" rel="noopener nofollow">Buy at ' + (eq.panels.linkLabel || 'retailer') + ' ↗</a></p>'
         : '';
+      var alternates = (eq.panels.alternates || []).map(function (alt) {
+        return '<li><a href="' + alt.link + '" target="_blank" rel="noopener nofollow">' + alt.source + '</a> — $' + alt.priceEach + ' each</li>';
+      }).join('');
       panelsCard.innerHTML =
         '<h3>The 400W Sweet Spot</h3>' +
         '<p><strong>Sweet spot:</strong> ' + eq.panels.sweetSpot + '</p>' +
         '<p><strong>Example purchase:</strong> ' + eq.panels.example + '</p>' +
         '<p><strong>Specs to check:</strong> ' + eq.panels.specs + '</p>' +
-        '<p class="small text-dim mt-2">At roughly $' + eq.panels.pricePerPanel + ' per panel, an 8-panel ' +
-        '3.2 kW array costs around $' + (eq.panels.pricePerPanel * 8).toLocaleString() + ' for modules ' +
+        '<p class="small text-dim mt-2">At $' + eq.panels.pricePerPanel + ' per panel, an 8-panel ' +
+        '3.2 kW array costs $' + (eq.panels.pricePerPanel * 8).toLocaleString() + ' for modules ' +
         'alone — racking, wire, and the MPPT controller are additional. Bifacial panels are preferred for ' +
         'their slightly better winter performance on snow-covered roofs reflecting light to the rear side.</p>' +
+        (alternates ? '<p class="small text-dim"><strong>Alternates:</strong></p><ul class="small text-dim">' + alternates + '</ul>' : '') +
         panelsBuy;
     }
 

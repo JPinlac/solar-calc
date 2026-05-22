@@ -15,10 +15,19 @@
   const HEAT_PUMP_WINTER_KWH = 12;      // kWh/day in winter only
   const EWH_KWH = 6;                    // kWh/day
   const COOL_CURRENTS_SUMMER_KWH_MO = 250;
-  const BATTERY_KWH_EACH = 4.8;
-  const BATTERY_PRICE = 1430;
-  const INVERTER_PRICE = 4049;
-  const PANEL_PRICE = 160;
+  // Battery = Docan Panda 32 kWh @ $2,755 per unit + $560 flat freight once.
+  // Matches the recommended Victron + Panda staged path used everywhere else on the site.
+  const BATTERY_KWH_EACH = 32;
+  const BATTERY_PRICE = 2755;
+  const BATTERY_FREIGHT = 560;
+  // Inverter = 2× Victron MultiPlus-II 48/3000 ($2,200) + Cerbo GX ($350) = $2,550.
+  // Required whenever a battery is present. Solar without battery uses the same
+  // Victron stack plus a SmartSolar MPPT.
+  const INVERTER_BUNDLE = 2550;
+  const MPPT_PRICE = 800;
+  // 400W panels at $145 each — Phono Solar via D2 Solar Detroit (local Detroit retailer,
+  // cheaper than the $160 mail-order baseline used elsewhere on the site).
+  const PANEL_PRICE = 145;
   const MINI_SPLIT_PRICE = 1100;
   const ROUND_TRIP = 0.9;               // 90% battery round-trip efficiency
   const SUMMER_PSH = 5.0;                // peak sun hours summer day avg
@@ -30,21 +39,25 @@
   let activeSeason = 'summer';
 
   // ---------- Read form state ----------
-  const readState = () => ({
-    dailyKwh: +$('dailyKwh').value,
-    currentPlan: $('currentPlan').value,
-    coolCurrents: $('coolCurrents').checked,
-    addSolar: $('addSolar').checked,
-    addBattery: $('addBattery').checked,
-    addMiniSplit: $('addMiniSplit').checked,
-    addEv: $('addEv').checked,
-    addHeatPump: $('addHeatPump').checked,
-    addEwh: $('addEwh').checked,
-    panelCount: +$('panelCount').value,
-    orientation: $('orientation').value,
-    batteryCount: +$('batteryCount').value,
-    evMiles: +$('evMiles').value,
-  });
+  // batteryCount is the source of truth; addBattery is derived (count > 0).
+  const readState = () => {
+    const batteryCount = +$('batteryCount').value;
+    return {
+      dailyKwh: +$('dailyKwh').value,
+      currentPlan: $('currentPlan').value,
+      coolCurrents: $('coolCurrents').checked,
+      addSolar: $('addSolar').checked,
+      addBattery: batteryCount > 0,
+      addMiniSplit: $('addMiniSplit').checked,
+      addEv: $('addEv').checked,
+      addHeatPump: $('addHeatPump').checked,
+      addEwh: $('addEwh').checked,
+      panelCount: +$('panelCount').value,
+      orientation: $('orientation').value,
+      batteryCount,
+      evMiles: +$('evMiles').value,
+    };
+  };
 
   // ---------- Recommended plan (Section 5 decision matrix) ----------
   const recommendPlan = (s) => {
@@ -235,26 +248,31 @@
     const items = [];
     let total = 0;
 
-    if (s.addBattery) {
-      const batt = s.batteryCount * BATTERY_PRICE;
-      items.push({ label: `${s.batteryCount}× EG4 LL-S battery`, cost: batt });
-      total += batt;
-      items.push({ label: 'EG4 12kPV inverter', cost: INVERTER_PRICE });
-      total += INVERTER_PRICE;
+    // Victron inverter + Cerbo GX is the shared chassis for both battery and solar.
+    // Added once if either is present.
+    const needsInverter = s.addBattery || s.addSolar;
+    if (needsInverter) {
+      items.push({ label: '2× Victron MultiPlus-II 48/3000 + Cerbo GX', cost: INVERTER_BUNDLE });
+      total += INVERTER_BUNDLE;
+    }
+
+    if (s.addBattery && s.batteryCount > 0) {
+      const battSubtotal = s.batteryCount * BATTERY_PRICE;
+      items.push({ label: `${s.batteryCount}× Docan Panda 32 kWh battery`, cost: battSubtotal });
+      total += battSubtotal;
+      items.push({ label: 'Freight (Houston TX, one-time)', cost: BATTERY_FREIGHT });
+      total += BATTERY_FREIGHT;
     }
 
     if (s.addSolar) {
       const panels = s.panelCount * PANEL_PRICE;
-      items.push({ label: `${s.panelCount}× 400W panels`, cost: panels });
+      items.push({ label: `${s.panelCount}× 400W Phono panels (D2 Solar Detroit)`, cost: panels });
       total += panels;
+      items.push({ label: 'Victron SmartSolar MPPT 250/100', cost: MPPT_PRICE });
+      total += MPPT_PRICE;
       const racking = s.panelCount <= 12 ? 500 : 1000;
       items.push({ label: 'Racking & wiring', cost: racking });
       total += racking;
-      if (!s.addBattery) {
-        // Inverter still needed if solar without battery.
-        items.push({ label: 'EG4 12kPV inverter', cost: INVERTER_PRICE });
-        total += INVERTER_PRICE;
-      }
     }
 
     if (s.addMiniSplit) {
@@ -263,7 +281,7 @@
     }
 
     if (s.coolCurrents) {
-      items.push({ label: 'Cool Currents enrollment', cost: 0 });
+      items.push({ label: 'Cool Currents enrollment (DTE installs free)', cost: 0 });
     }
 
     return { items, total };
@@ -305,20 +323,26 @@
     const s = readState();
     const rec = recommendPlan(s);
 
-    // Sync conditional sections
+    // Sync conditional sections (battery slider is always visible now — 0 = none)
     $('solarOpts').classList.toggle('show', s.addSolar);
-    $('batteryOpts').classList.toggle('show', s.addBattery);
     $('evOpts').classList.toggle('show', s.addEv);
 
     // Sync value displays
     $('dailyKwhVal').textContent = s.dailyKwh;
     $('panelCountVal').textContent = s.panelCount;
     $('batteryCountVal').textContent = s.batteryCount;
-    $('batteryKwh').textContent = (s.batteryCount * BATTERY_KWH_EACH).toFixed(1);
+    $('batteryKwh').textContent = s.batteryCount === 0
+      ? 'no battery'
+      : (s.batteryCount * BATTERY_KWH_EACH).toFixed(0) + ' kWh';
     $('evMilesVal').textContent = s.evMiles;
 
-    // Build a "no system" baseline: same usage profile, no solar/battery/EV/HP/EWH/MS, on current plan.
-    const baselineState = { ...s, addSolar: false, addBattery: false, addMiniSplit: false, addEv: false, addHeatPump: false, addEwh: false };
+    // "No-system" baseline must include the SAME load additions (EV, heat pump,
+    // water heater, mini-split) as the optimized scenario — otherwise an EV would
+    // make the optimized bill go up vs. a baseline that ignores it, and savings
+    // look artificially small. Only the equipment that the system PROVIDES is
+    // stripped: solar production and battery storage. Cool Currents stays in both
+    // because it's a free DTE program, not equipment purchase.
+    const baselineState = { ...s, addSolar: false, batteryCount: 0, addBattery: false };
     const baseline = annualizeCost(baselineState, s.currentPlan);
     const optimized = annualizeCost(s, rec.id);
     const annualSavings = baseline.annual - optimized.annual;
