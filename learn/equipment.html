@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Equipment Guide — Inverters, Batteries, Panels — DTE Solar Plan</title>
+<meta name="description" content="Equipment reference for DTE residential solar + battery builds: Victron and EG4 inverters, Docan Panda and EG4 LL-S batteries, 400W panels, and comfort equipment.">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<div id="site-header"></div>
+
+<main class="container page">
+
+  <section>
+    <h1>Equipment Guide</h1>
+    <p class="lede text-dim">
+      The components that actually make residential solar + battery work in 2026 — inverters, batteries,
+      panels, and comfort equipment. Prices reflect Q1 2026 retail / direct-import pricing for DTE-area
+      customers. Every dollar figure on this site assumes you are paying full price; the federal Section
+      25D tax credit was eliminated effective January 1, 2026.
+    </p>
+  </section>
+
+  <section>
+    <h2>Inverters</h2>
+    <p>
+      The inverter is the single most important architectural decision in the system. It dictates whether
+      the system is staged or all-in-one, whether you can upgrade modularly, whether you can run Dynamic
+      ESS for automatic rate optimization, and how DIY-friendly the install is. The two ecosystems worth
+      seriously considering for DTE-area DIY builds are Victron and EG4.
+    </p>
+    <div class="table-wrap">
+      <table id="inverters-table">
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>Voltage</th>
+            <th>Output</th>
+            <th>PV Input</th>
+            <th class="num">Price</th>
+            <th>Best For</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="small text-dim">
+      <strong>Note:</strong> Victron requires a separate MPPT charge controller (~$800 for a SmartSolar
+      250/100) and a Cerbo GX (~$350) for monitoring and Dynamic ESS. Total Victron system cost is
+      comparable to EG4 once these are added in, but the modular architecture allows staged purchasing —
+      you can buy the inverter and Cerbo now, add the MPPT and panels later when the roof is replaced.
+    </p>
+  </section>
+
+  <section>
+    <h2>Batteries</h2>
+    <p>
+      Battery cost dropped from $400+/kWh to under $100/kWh over the past five years, and that is the
+      single biggest reason residential storage now pencils out without the tax credit. The dominant
+      chemistry for residential is <strong>LiFePO4</strong> (lithium iron phosphate) — safer than NMC,
+      longer cycle life, and lower energy density that does not matter for stationary applications.
+    </p>
+    <div class="table-wrap">
+      <table id="batteries-table">
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>Voltage</th>
+            <th class="num">Capacity (kWh)</th>
+            <th class="num">$/kWh</th>
+            <th class="num">Cycles</th>
+            <th class="num">Price</th>
+            <th>Best For</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="small text-dim">
+      <strong>Note:</strong> 48V systems are recommended for DIY due to safety — terminal voltage is below
+      the typical shock-hazard threshold. 400V high-voltage systems should be professionally installed.
+      The Docan Panda at $86/kWh is the current value leader for residential storage but is a Chinese
+      direct-import brand with less established US warranty support than EG4 or LG. Buy from a US
+      distributor (Houston-area freight is common) and budget time for shipping logistics.
+    </p>
+  </section>
+
+  <section>
+    <h2>Solar Panels</h2>
+    <p>
+      Panels are the most commoditized part of the system. Module pricing has been remarkably stable around
+      $0.30–0.40/W for the last several years, and the differences between Tier-1 and bulk/sale-priced
+      panels are smaller than most other equipment choices.
+    </p>
+    <div class="card" id="panels-card">
+      <h3>The 400W Sweet Spot</h3>
+      <p class="text-dim">Loading panel data...</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Comfort Equipment</h2>
+    <p>
+      Comfort equipment is often the highest-ROI part of the stack on a per-dollar basis — not because
+      the dollar savings are huge but because the upfront cost is low and the lifestyle improvement is
+      real. Cool Currents in particular is a free program that shifts AC load to a flat 17¢ rate; it pays
+      back instantly the moment you enroll.
+    </p>
+    <div class="table-wrap">
+      <table id="comfort-table">
+        <thead>
+          <tr>
+            <th>Equipment</th>
+            <th>Purpose</th>
+            <th>Cost</th>
+            <th>Energy Impact</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Recommended Setup</h2>
+    <div class="card">
+      <h3>Staged Victron + Docan Panda — The Whole-Site Recommendation</h3>
+      <p>
+        For the homeowner staging investment, the recommended approach is two Victron MultiPlus-II
+        48/3000 inverters (split phase, 6 kW output), a Cerbo GX for monitoring and Dynamic ESS, and a
+        single Docan Panda 32 kWh battery — total around <strong>$5,865</strong> including shipping
+        before any solar.
+      </p>
+      <p>
+        This Stage 1 build runs battery arbitrage on D1.13 and pays back in 8–12 years on house only,
+        7–8 years with an EV in the mix. Solar can be added in Stage 2 (when the roof is replaced) by
+        adding a Victron SmartSolar MPPT 250/100 and 8 × 400W panels — roughly another $2,576 — for a
+        combined ~$8,441 system with $900–1,100/year savings and an 8–9 year combined payback.
+      </p>
+      <p>
+        Stage 3 (when EV and heat pump both come online) adds a second pair of MultiPlus-II 48/5000
+        inverters in parallel, additional solar, and optionally a second Docan Panda. Every dollar
+        spent in Stage 1 is still in service in Stage 3 — nothing is thrown away.
+      </p>
+      <ul class="checks">
+        <li>Modular: add inverters, MPPTs, and batteries as budget allows.</li>
+        <li>Dynamic ESS automates the rate-arbitrage logic. No custom code required.</li>
+        <li>48V system safe for DIY maintenance, expansion, and battery swap.</li>
+        <li>Compatible with virtually any 48V battery — you are not locked to one brand.</li>
+        <li>Lower upfront cost than EG4 all-in-one when solar is not needed yet.</li>
+      </ul>
+      <p class="mt-3">
+        <a class="btn" href="../configurations.html#config-e">See full Configuration E breakdown →</a>
+        <a class="btn btn-secondary" href="../calculator.html">Run the calculator</a>
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Related Reading</h2>
+    <div class="grid">
+      <a class="card" href="diy-vs-pro.html">
+        <h3>DIY vs Professional Install</h3>
+        <p class="text-dim">What Michigan requires, what you can do yourself, and how the subcontracting model works.</p>
+      </a>
+      <a class="card" href="stacking-strategy.html">
+        <h3>The Stacking Strategy</h3>
+        <p class="text-dim">How to layer Cool Currents + TOU + battery + solar + EV for multiplicative savings.</p>
+      </a>
+      <a class="card" href="../configurations.html">
+        <h3>Example Configurations</h3>
+        <p class="text-dim">Five complete buildable systems with prices and payback figures.</p>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/nav.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.DTE || !window.DTE.equipment) return;
+    var eq = window.DTE.equipment;
+
+    function fmt(n) {
+      return '$' + Number(n).toLocaleString(undefined, { maximumFractionDigits: 0 });
+    }
+
+    // Inverters
+    var invTbody = document.querySelector('#inverters-table tbody');
+    if (invTbody && eq.inverters) {
+      invTbody.innerHTML = eq.inverters.map(function (i) {
+        return '<tr>' +
+          '<td>' + i.model + '</td>' +
+          '<td>' + i.voltage + '</td>' +
+          '<td>' + i.output + '</td>' +
+          '<td>' + i.pv + '</td>' +
+          '<td class="num">' + fmt(i.price) + '</td>' +
+          '<td>' + i.bestFor + '</td>' +
+        '</tr>';
+      }).join('');
+    }
+
+    // Batteries
+    var batTbody = document.querySelector('#batteries-table tbody');
+    if (batTbody && eq.batteries) {
+      batTbody.innerHTML = eq.batteries.map(function (b) {
+        return '<tr>' +
+          '<td>' + b.model + '</td>' +
+          '<td>' + b.voltage + '</td>' +
+          '<td class="num">' + b.kwh + '</td>' +
+          '<td class="num">$' + b.costPerKwh + '</td>' +
+          '<td class="num">' + b.cycles.toLocaleString() + '</td>' +
+          '<td class="num">' + fmt(b.price) + '</td>' +
+          '<td>' + b.bestFor + '</td>' +
+        '</tr>';
+      }).join('');
+    }
+
+    // Panels
+    var panelsCard = document.getElementById('panels-card');
+    if (panelsCard && eq.panels) {
+      panelsCard.innerHTML =
+        '<h3>The 400W Sweet Spot</h3>' +
+        '<p><strong>Sweet spot:</strong> ' + eq.panels.sweetSpot + '</p>' +
+        '<p><strong>Example purchase:</strong> ' + eq.panels.example + '</p>' +
+        '<p><strong>Specs to check:</strong> ' + eq.panels.specs + '</p>' +
+        '<p class="small text-dim mt-2">At roughly $' + eq.panels.pricePerPanel + ' per panel, an 8-panel ' +
+        '3.2 kW array costs around $' + (eq.panels.pricePerPanel * 8).toLocaleString() + ' for modules ' +
+        'alone — racking, wire, and the MPPT controller are additional. Bifacial panels are preferred for ' +
+        'their slightly better winter performance on snow-covered roofs reflecting light to the rear side.</p>';
+    }
+
+    // Comfort
+    var comfTbody = document.querySelector('#comfort-table tbody');
+    if (comfTbody && eq.comfort) {
+      comfTbody.innerHTML = eq.comfort.map(function (c) {
+        return '<tr>' +
+          '<td>' + c.equipment + '</td>' +
+          '<td>' + c.purpose + '</td>' +
+          '<td>' + c.cost + '</td>' +
+          '<td>' + c.energy + '</td>' +
+        '</tr>';
+      }).join('');
+    }
+  });
+</script>
+</body>
+</html>
