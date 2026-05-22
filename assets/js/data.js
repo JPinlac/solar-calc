@@ -324,12 +324,28 @@ const DTE = {
           combinedPayback: '~7–9 years on $11,945 combined',
         },
         {
-          name: 'Stage 3 — Scale for EV + Heat Pump',
-          components: [
-            { component: 'Additional inverters', model: '2× Victron MultiPlus-II 48/5000 parallel', price: 3620 },
-            { component: 'Additional solar', model: '24× 400W Phono panels + 2× SmartSolar MPPT 250/100 + racking', price: 6080 },
-            { component: 'Additional battery (optional)', model: 'Second Docan Panda 32kWh', price: 3315 },
-          ],
+          name: 'Stage 3 — Full Electrification (2 EVs + Heat Pump + Electric Water Heater)',
+          loadProfile: '~50–55 kWh/day annual avg: 19 baseline + ~18 for two EVs + 8 winter-weighted heat pump + 6 water heater. Total panels stay at 24 (9.6 kW).',
+          stage3A: {
+            label: 'Stage 3-A (if you took Stage 2-Large, already 24 panels)',
+            components: [
+              { component: 'Additional inverters', model: '2× Victron MultiPlus-II 48/5000 parallel (~16 kW with Stage 1)', price: 3620 },
+              { component: 'Additional battery', model: 'Second Docan Panda 32 kWh (total 64 kWh)', price: 3315 },
+            ],
+            total: 6935,
+          },
+          stage3B: {
+            label: 'Stage 3-B (if you took Stage 2-Small, brings panel total to 24)',
+            components: [
+              { component: 'Additional inverters', model: '2× Victron MultiPlus-II 48/5000 parallel', price: 3620 },
+              { component: 'Additional battery', model: 'Second Docan Panda 32 kWh', price: 3315 },
+              { component: 'Additional solar', model: '16× 400W Phono panels + SmartSolar MPPT 250/100 + racking', price: 3620 },
+            ],
+            total: 10555,
+          },
+          combinedTotal: 18880,
+          combinedAnnualSavings: '$2,000–2,800',
+          combinedPayback: '~8–10 years on $18,880 total',
         },
       ],
       total: 5865,
