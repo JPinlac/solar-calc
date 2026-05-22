@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DTE Rate Projections & Payback Analysis</title>
+<meta name="description" content="DTE rate history, 5.5% aggressive scenario projections through 2036, and four detailed payback scenarios for battery + EV + solar systems.">
+<link rel="stylesheet" href="assets/css/main.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div id="site-header"></div>
+
+<section class="hero">
+  <div class="container">
+    <h1>DTE Rate Projections &amp; Payback Analysis</h1>
+    <p class="lede">
+      DTE's residential rates have climbed faster than general inflation for a decade, and the pace is accelerating.
+      For long-term planning we use a <strong>5.5% annual growth scenario</strong> — aggressive, but well-justified
+      by the last four years of rate-case activity, data center load growth, coal retirements, and the Trenton
+      Channel battery buildout. All payback math on this page assumes that scenario and <strong>zero federal tax credit</strong>.
+    </p>
+  </div>
+</section>
+
+<main class="container page">
+
+  <!-- ============ SECTION 2: Historical Trajectory ============ -->
+  <section>
+    <h2>Historical Rate Trajectory</h2>
+    <p>
+      DTE rate increases added <strong>$774 million</strong> in costs between 2015–2019. A
+      <strong>$368 million</strong> increase followed in 2023, then <strong>$217 million</strong>
+      in January 2025, with another <strong>$456 million</strong> requested in April 2025. Rate
+      case filings have accelerated from every 24 months a decade ago to <strong>every 12 months</strong> now.
+    </p>
+
+    <div class="table-wrap">
+      <table id="history-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th class="num">Avg Residential Rate</th>
+            <th class="num">Year-over-Year</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="chart-card mt-3">
+      <h3>DTE Average Residential Rate, 2015–2026</h3>
+      <div class="chart-wrap">
+        <canvas id="historyChart"></canvas>
+      </div>
+    </div>
+
+    <div class="callout mt-3">
+      <h4>Compound Annual Growth Rates</h4>
+      <ul class="mb-0">
+        <li><strong>10-year CAGR (2015–2025):</strong> 3.4%</li>
+        <li><strong>Recent 4-year CAGR (2021–2025):</strong> ~3.8%</li>
+        <li><strong>Peak recent years:</strong> 4–5%+ (2021, 2023, 2025)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 3: Why 5.5% ============ -->
+  <section>
+    <h2>Why 5.5% Is the Right Planning Assumption</h2>
+    <p>
+      Historical CAGR sits in the 3–4% range, but every forward-looking pressure points <em>up</em>, not down.
+      A 5.5% planning assumption is conservative against the worst case and still leaves margin for surprises.
+    </p>
+    <ul class="checks" id="rationale-list"></ul>
+  </section>
+
+  <!-- ============ SECTION 4: Projected D1.13 Rates ============ -->
+  <section>
+    <h2>Projected D1.13 Overnight Savers Rates (5.5% Growth, 2026–2036)</h2>
+    <p>
+      The D1.13 Overnight Savers plan is the linchpin of every battery-arbitrage scenario.
+      Below are the three summer-period rates inflated at 5.5%/yr from their 2026 starting values,
+      along with the <strong>peak-to-super-off-peak spread</strong> — the per-kWh value the battery
+      captures every time it cycles.
+    </p>
+    <div class="table-wrap">
+      <table id="d113-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th class="num">Super Off-Peak</th>
+            <th class="num">Off-Peak (Summer)</th>
+            <th class="num">Peak (Summer)</th>
+            <th class="num">Peak-to-Super Spread</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="chart-card mt-3">
+      <h3>D1.13 Rates &amp; Arbitrage Spread Through 2036</h3>
+      <div class="chart-wrap">
+        <canvas id="d113Chart"></canvas>
+      </div>
+    </div>
+
+    <div class="callout success mt-3">
+      <p class="mb-0">
+        The arbitrage spread grows from <strong>23.82¢</strong> to <strong>40.69¢</strong> over 10 years.
+        <strong>The battery becomes MORE valuable every year.</strong>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 5: Annual Bills Without System ============ -->
+  <section>
+    <h2>Projected Annual Bills Without Any System</h2>
+    <p>
+      For a typical 19 kWh/day household on the D1.11 default plan, here's what doing nothing costs.
+      Starting from a 2026 baseline of <strong>$1,303</strong>, inflated at 5.5%/yr:
+    </p>
+    <div class="table-wrap">
+      <table id="bills-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th class="num">Annual Bill</th>
+            <th class="num">Increase from 2026</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="callout warning mt-3">
+      <p class="mb-0">
+        Cumulative electricity spend 2026–2036 without any system: <strong>~$18,400</strong>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 6: Battery Arbitrage Payback ============ -->
+  <section>
+    <h2>Battery Arbitrage Payback Analysis</h2>
+
+    <!-- 6a Methodology -->
+    <div class="callout">
+      <h4>Methodology</h4>
+      <ul class="mb-0">
+        <li><strong>Without system:</strong> D1.11 (default plan, 3–7pm peak)</li>
+        <li><strong>With system:</strong> D1.13 Overnight Savers + battery arbitrage</li>
+        <li>Battery charges 1am–7am super off-peak (11.74¢ in 2026, +5.5%/yr)</li>
+        <li>90% round-trip efficiency on battery discharge</li>
+        <li>House baseline: 19 kWh/day; ~4.75 kWh consumed directly during the super off-peak window</li>
+        <li>All rates inflate 5.5%/yr</li>
+      </ul>
+    </div>
+
+    <!-- 6b Scenario A -->
+    <h3>Scenario A: House Only ($5,865 Victron + Panda system)</h3>
+    <p class="text-dim">
+      Stage 1 of the recommended build: 2× Victron MultiPlus-II 48/3000 + Cerbo GX + Docan Panda 32 kWh.
+      Pure rate arbitrage — no solar, no EV.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th class="num">D1.11 Cost</th>
+            <th class="num">D1.13 + Battery Cost</th>
+            <th class="num">Annual Savings</th>
+            <th class="num">Cumulative Savings</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1 (2026)</td><td class="num">$1,303</td><td class="num">$813</td><td class="num">$490</td><td class="num">$490</td></tr>
+          <tr><td>2 (2027)</td><td class="num">$1,375</td><td class="num">$858</td><td class="num">$517</td><td class="num">$1,007</td></tr>
+          <tr><td>3 (2028)</td><td class="num">$1,450</td><td class="num">$905</td><td class="num">$545</td><td class="num">$1,552</td></tr>
+          <tr><td>4 (2029)</td><td class="num">$1,530</td><td class="num">$955</td><td class="num">$575</td><td class="num">$2,127</td></tr>
+          <tr><td>5 (2030)</td><td class="num">$1,614</td><td class="num">$1,007</td><td class="num">$607</td><td class="num">$2,734</td></tr>
+          <tr><td>6 (2031)</td><td class="num">$1,703</td><td class="num">$1,062</td><td class="num">$641</td><td class="num">$3,375</td></tr>
+          <tr><td>7 (2032)</td><td class="num">$1,797</td><td class="num">$1,121</td><td class="num">$676</td><td class="num">$4,051</td></tr>
+          <tr><td>8 (2033)</td><td class="num">$1,895</td><td class="num">$1,182</td><td class="num">$713</td><td class="num">$4,764</td></tr>
+          <tr><td>9 (2034)</td><td class="num">$2,000</td><td class="num">$1,247</td><td class="num">$753</td><td class="num">$5,517</td></tr>
+          <tr><td>10 (2035)</td><td class="num">$2,110</td><td class="num">$1,316</td><td class="num">$794</td><td class="num">$6,311</td></tr>
+          <tr><td>11 (2036)</td><td class="num">$2,226</td><td class="num">$1,388</td><td class="num">$838</td><td class="num">$7,149</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout success">
+      <p class="mb-0"><strong>House-only payback: ~Year 10–11</strong> on $5,865 system cost.</p>
+    </div>
+
+    <!-- 6c Scenario B -->
+    <h3>Scenario B: House + 1 EV (added Year 2)</h3>
+    <p class="text-dim">
+      EV averages 12 kWh/day (35–40 miles at 3.5 mi/kWh). EV charges directly during the super off-peak
+      window. EV savings = (D1.11 off-peak rate − D1.13 super off-peak rate) × 12 kWh × 365 days.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th class="num">D1.11 Cost</th>
+            <th class="num">D1.13 + Battery + EV</th>
+            <th class="num">Annual Savings</th>
+            <th class="num">Cumulative Savings</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1 (2026)</td><td class="num">$1,303</td><td class="num">$813</td><td class="num">$490</td><td class="num">$490</td></tr>
+          <tr><td>2 (2027) +EV</td><td class="num">$2,182</td><td class="num">$1,372</td><td class="num">$810</td><td class="num">$1,300</td></tr>
+          <tr><td>3 (2028)</td><td class="num">$2,302</td><td class="num">$1,447</td><td class="num">$855</td><td class="num">$2,155</td></tr>
+          <tr><td>4 (2029)</td><td class="num">$2,429</td><td class="num">$1,527</td><td class="num">$902</td><td class="num">$3,057</td></tr>
+          <tr><td>5 (2030)</td><td class="num">$2,562</td><td class="num">$1,611</td><td class="num">$951</td><td class="num">$4,008</td></tr>
+          <tr><td>6 (2031)</td><td class="num">$2,703</td><td class="num">$1,699</td><td class="num">$1,004</td><td class="num">$5,012</td></tr>
+          <tr><td>7 (2032)</td><td class="num">$2,852</td><td class="num">$1,793</td><td class="num">$1,059</td><td class="num">$6,071</td></tr>
+          <tr><td>8 (2033)</td><td class="num">$3,008</td><td class="num">$1,891</td><td class="num">$1,117</td><td class="num">$7,188</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout success">
+      <p class="mb-0"><strong>House + 1 EV payback: ~Year 7</strong> on $5,865 system cost.</p>
+    </div>
+
+    <!-- 6d Scenario C -->
+    <h3>Scenario C: House + 2 EVs (second EV added Year 3)</h3>
+    <p class="text-dim">
+      Second EV averages 10 kWh/day. Both EVs charge during super off-peak (combined 22 kWh/day).
+      Note: 22 + 19 = <strong>41 kWh/day</strong>. Six-hour super off-peak window → ~6.8 kW average
+      charge rate, achievable with two Level 2 chargers or one staggered 40A charger —
+      <strong>verify panel capacity</strong>. Battery handles house only; both EVs charge straight
+      from the grid during super off-peak.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th class="num">D1.11 Cost</th>
+            <th class="num">D1.13 + Battery + 2 EVs</th>
+            <th class="num">Annual Savings</th>
+            <th class="num">Cumulative Savings</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1 (2026)</td><td class="num">$1,303</td><td class="num">$813</td><td class="num">$490</td><td class="num">$490</td></tr>
+          <tr><td>2 (2027) +EV1</td><td class="num">$2,182</td><td class="num">$1,372</td><td class="num">$810</td><td class="num">$1,300</td></tr>
+          <tr><td>3 (2028) +EV2</td><td class="num">$3,034</td><td class="num">$1,910</td><td class="num">$1,124</td><td class="num">$2,424</td></tr>
+          <tr><td>4 (2029)</td><td class="num">$3,201</td><td class="num">$2,015</td><td class="num">$1,186</td><td class="num">$3,610</td></tr>
+          <tr><td>5 (2030)</td><td class="num">$3,377</td><td class="num">$2,126</td><td class="num">$1,251</td><td class="num">$4,861</td></tr>
+          <tr><td>6 (2031)</td><td class="num">$3,563</td><td class="num">$2,243</td><td class="num">$1,320</td><td class="num">$6,181</td></tr>
+          <tr><td>7 (2032)</td><td class="num">$3,759</td><td class="num">$2,366</td><td class="num">$1,393</td><td class="num">$7,574</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout success">
+      <p class="mb-0"><strong>House + 2 EVs payback: ~Year 6</strong> on $5,865 system cost.</p>
+    </div>
+
+    <!-- 6e Scenario D -->
+    <h3>Scenario D: House + 2 EVs + Solar (panels added Year 3)</h3>
+    <p class="text-dim">
+      Adds 8× 400W panels ($1,276) + Victron SmartSolar MPPT 250/100 ($800) + racking ($500) = <strong>$2,576</strong>
+      in Year 3, on top of the $5,865 Stage 1 system. Solar produces ~4,300 kWh/year and offsets daytime house load
+      and battery charging, worth roughly $700–850/year. Combined cost: <strong>$8,441</strong>.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th class="num">D1.11 Cost</th>
+            <th class="num">D1.13 + Battery + 2 EVs + Solar</th>
+            <th class="num">Annual Savings</th>
+            <th class="num">Cumulative Savings</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1 (2026)</td><td class="num">$1,303</td><td class="num">$813</td><td class="num">$490</td><td class="num">$490</td></tr>
+          <tr><td>2 (2027) +EV1</td><td class="num">$2,182</td><td class="num">$1,372</td><td class="num">$810</td><td class="num">$1,300</td></tr>
+          <tr><td>3 (2028) +EV2 +Solar</td><td class="num">$3,034</td><td class="num">$1,160</td><td class="num">$1,874</td><td class="num">$3,174</td></tr>
+          <tr><td>4 (2029)</td><td class="num">$3,201</td><td class="num">$1,224</td><td class="num">$1,977</td><td class="num">$5,151</td></tr>
+          <tr><td>5 (2030)</td><td class="num">$3,377</td><td class="num">$1,291</td><td class="num">$2,086</td><td class="num">$7,237</td></tr>
+          <tr><td>6 (2031)</td><td class="num">$3,563</td><td class="num">$1,362</td><td class="num">$2,201</td><td class="num">$9,438</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout success">
+      <p class="mb-0"><strong>Full system payback: ~Year 5–6</strong> on $8,441 total cost.</p>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 7: 15-Year Summary ============ -->
+  <section>
+    <h2>15-Year Value Summary</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Configuration</th>
+            <th class="num">System Cost</th>
+            <th class="num">Payback Year</th>
+            <th class="num">15-Year Net Savings</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>House only</td><td class="num">$5,865</td><td class="num">~Year 10–11</td><td class="num">~$5,500</td></tr>
+          <tr><td>House + 1 EV</td><td class="num">$5,865</td><td class="num">~Year 7</td><td class="num">~$12,000</td></tr>
+          <tr><td>House + 2 EVs</td><td class="num">$5,865</td><td class="num">~Year 6</td><td class="num">~$16,500</td></tr>
+          <tr><td>House + 2 EVs + Solar</td><td class="num">$8,441</td><td class="num">~Year 5–6</td><td class="num">~$23,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small text-dim">
+      Net savings = cumulative savings minus system cost. All scenarios continue generating value beyond year 15.
+      Battery cycle life (8,000 cycles) supports ~22 years of daily cycling.
+    </p>
+  </section>
+
+  <!-- ============ SECTION 8: Closing ============ -->
+  <section>
+    <div class="callout warning">
+      <h4>Remember</h4>
+      <p class="mb-0">
+        All numbers assume <strong>ZERO federal tax credit</strong>. The credit was eliminated
+        January 1, 2026 by the One Big Beautiful Bill Act.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/nav.js"></script>
+<script>
+(function () {
+  // ----- Formatting helpers -----
+  const fmtCents = (rateInDollars) => (rateInDollars * 100).toFixed(2) + '¢';
+  const fmtDollars = (n) => '$' + Math.round(n).toLocaleString('en-US');
+  const fmtPct1 = (frac) => (frac >= 0 ? '+' : '') + (frac * 100).toFixed(1) + '%';
+
+  // ----- Chart.js global defaults -----
+  if (window.Chart) {
+    Chart.defaults.color = '#e6edf3';
+    Chart.defaults.borderColor = '#30363d';
+    Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+  }
+
+  const proj = window.DTE.projections;
+
+  // ====== History table ======
+  const histTbody = document.querySelector('#history-table tbody');
+  proj.history.forEach((row) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td>' + row.year + '</td>' +
+      '<td class="num">' + fmtCents(row.rate) + '</td>' +
+      '<td class="num">' + (row.change == null ? '—' : fmtPct1(row.change)) + '</td>';
+    histTbody.appendChild(tr);
+  });
+
+  // ====== History chart ======
+  const histCtx = document.getElementById('historyChart');
+  if (histCtx && window.Chart) {
+    new Chart(histCtx, {
+      type: 'line',
+      data: {
+        labels: proj.history.map((h) => h.year),
+        datasets: [{
+          label: 'Avg Residential Rate (¢/kWh)',
+          data: proj.history.map((h) => +(h.rate * 100).toFixed(2)),
+          borderColor: '#f5a623',
+          backgroundColor: 'rgba(245,166,35,0.15)',
+          tension: 0.25,
+          fill: true,
+          pointRadius: 4,
+          pointBackgroundColor: '#f5a623',
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { labels: { color: '#e6edf3' } },
+          tooltip: { callbacks: { label: (c) => c.parsed.y.toFixed(2) + '¢/kWh' } },
+        },
+        scales: {
+          x: { grid: { color: '#30363d' }, ticks: { color: '#e6edf3' } },
+          y: {
+            grid: { color: '#30363d' },
+            ticks: { color: '#e6edf3', callback: (v) => v + '¢' },
+            title: { display: true, text: '¢/kWh', color: '#e6edf3' },
+          },
+        },
+      },
+    });
+  }
+
+  // ====== Rationale list ======
+  const rationale = document.getElementById('rationale-list');
+  proj.rationale.forEach((r) => {
+    const li = document.createElement('li');
+    li.textContent = r;
+    rationale.appendChild(li);
+  });
+
+  // ====== Projected D1.13 rates ======
+  const g = proj.annualGrowth; // 0.055
+  const base = proj.baseYear;  // 2026
+  const baseRates = { superOff: 0.1174, offPeakSummer: 0.2546, peakSummer: 0.3556 };
+  const years = [];
+  for (let y = base; y <= base + 10; y++) years.push(y);
+
+  const d113Rows = years.map((y) => {
+    const f = Math.pow(1 + g, y - base);
+    const so = baseRates.superOff * f;
+    const op = baseRates.offPeakSummer * f;
+    const pk = baseRates.peakSummer * f;
+    return { year: y, superOff: so, offPeak: op, peak: pk, spread: pk - so };
+  });
+
+  const d113Tbody = document.querySelector('#d113-table tbody');
+  d113Rows.forEach((r) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td>' + r.year + '</td>' +
+      '<td class="num">' + fmtCents(r.superOff) + '</td>' +
+      '<td class="num">' + fmtCents(r.offPeak) + '</td>' +
+      '<td class="num">' + fmtCents(r.peak) + '</td>' +
+      '<td class="num">' + fmtCents(r.spread) + '</td>';
+    d113Tbody.appendChild(tr);
+  });
+
+  // ====== D1.13 chart ======
+  const d113Ctx = document.getElementById('d113Chart');
+  if (d113Ctx && window.Chart) {
+    new Chart(d113Ctx, {
+      type: 'line',
+      data: {
+        labels: d113Rows.map((r) => r.year),
+        datasets: [
+          {
+            label: 'Super Off-Peak',
+            data: d113Rows.map((r) => +(r.superOff * 100).toFixed(2)),
+            borderColor: '#118ab2',
+            backgroundColor: 'rgba(17,138,178,0.1)',
+            tension: 0.25,
+          },
+          {
+            label: 'Off-Peak (Summer)',
+            data: d113Rows.map((r) => +(r.offPeak * 100).toFixed(2)),
+            borderColor: '#06d6a0',
+            backgroundColor: 'rgba(6,214,160,0.1)',
+            tension: 0.25,
+          },
+          {
+            label: 'Peak (Summer)',
+            data: d113Rows.map((r) => +(r.peak * 100).toFixed(2)),
+            borderColor: '#ef476f',
+            backgroundColor: 'rgba(239,71,111,0.1)',
+            tension: 0.25,
+          },
+          {
+            label: 'Peak − Super Off-Peak Spread',
+            data: d113Rows.map((r) => +(r.spread * 100).toFixed(2)),
+            borderColor: '#f5a623',
+            backgroundColor: 'rgba(245,166,35,0.1)',
+            borderDash: [6, 4],
+            tension: 0.25,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { labels: { color: '#e6edf3' } },
+          tooltip: { callbacks: { label: (c) => c.dataset.label + ': ' + c.parsed.y.toFixed(2) + '¢' } },
+        },
+        scales: {
+          x: { grid: { color: '#30363d' }, ticks: { color: '#e6edf3' } },
+          y: {
+            grid: { color: '#30363d' },
+            ticks: { color: '#e6edf3', callback: (v) => v + '¢' },
+            title: { display: true, text: '¢/kWh', color: '#e6edf3' },
+          },
+        },
+      },
+    });
+  }
+
+  // ====== Annual bills table ======
+  const baseBill = 1303;
+  const billYears = [2026, 2028, 2030, 2032, 2034, 2036];
+  const billsTbody = document.querySelector('#bills-table tbody');
+  billYears.forEach((y) => {
+    const f = Math.pow(1 + g, y - base);
+    const bill = baseBill * f;
+    const inc = bill - baseBill;
+    const tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td>' + y + '</td>' +
+      '<td class="num">' + fmtDollars(bill) + '</td>' +
+      '<td class="num">' + (y === base ? '—' : '+' + fmtDollars(inc).replace('$', '$')) + '</td>';
+    billsTbody.appendChild(tr);
+  });
+})();
+</script>
+</body>
+</html>

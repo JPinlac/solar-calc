@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Understanding Your DTE Bill — DTE Solar Plan</title>
+<meta name="description" content="How to read your DTE Energy bill: capacity vs non-capacity charges, distribution, PSCR rider, TOU line items, and inflow/outflow under DTE's distributed generation program.">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<div id="site-header"></div>
+
+<main class="container page">
+
+  <section>
+    <h1>Understanding Your DTE Bill</h1>
+    <p class="lede text-dim">
+      Before you can decide whether solar, battery, or a rate-plan switch will save you money, you have to
+      know what you are actually being charged for. DTE's residential bill is more layered than most. This
+      page walks through every line you'll see, what it means, and how to read your hourly usage data so
+      you can size a system correctly.
+    </p>
+  </section>
+
+  <section>
+    <h2>Capacity vs Non-Capacity Charges</h2>
+    <p>
+      Almost every DTE rate plan splits energy charges into two regulatory buckets: <strong>capacity</strong>
+      and <strong>non-capacity</strong>. The split is invisible if you only ever look at the bottom line, but
+      it matters because the two pieces respond differently in rate cases and the two pieces are quoted
+      separately on some rate sheets.
+    </p>
+    <ul>
+      <li><strong>Capacity</strong> recovers DTE's investment in generation capacity — the cost of owning power plants, transmission interconnects, and reserve margin. It is roughly the fixed cost of being able to deliver a kilowatt at peak.</li>
+      <li><strong>Non-capacity</strong> recovers the variable costs of generating that kilowatt-hour — fuel, plant operations and maintenance, ancillary services.</li>
+    </ul>
+    <p>
+      On most plans the capacity component is much higher in the four summer months (June–September) than the
+      rest of the year, which is why summer rates are visibly higher. The non-capacity piece is more stable.
+      When you see "energy charge" or "supply charge" on the bill, that's capacity + non-capacity added back
+      together.
+    </p>
+  </section>
+
+  <section>
+    <h2>The Distribution Charge: 9.726¢/kWh, Year-Round</h2>
+    <p>
+      Separately from the energy / supply charges, DTE applies a <strong>distribution charge of 9.726
+      cents per kWh</strong> to every single kilowatt-hour you consume. This is the cost of the wires, poles,
+      transformers, and local substations between you and the generation. It does not vary by time of day, by
+      season, or by rate plan.
+    </p>
+    <p>
+      The distribution charge is the largest single line item on most residential bills — bigger than the
+      capacity energy charge, bigger than the non-capacity charge. When people quote a single "effective
+      rate" for DTE — around 20¢/kWh blended — roughly half of that number is distribution. This matters for
+      two reasons:
+    </p>
+    <ul>
+      <li>Self-generated and self-consumed kWh avoid the distribution charge. Solar that powers your fridge directly is saving you 20¢, not 10¢.</li>
+      <li>Exported kWh do <em>not</em> earn the distribution component back — DTE's export credit is roughly the energy supply piece only, which is why the export rate looks so low.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>PSCR — Power Supply Cost Recovery</h2>
+    <p>
+      The published TOU rate cards do not include the <strong>Power Supply Cost Recovery</strong> rider.
+      PSCR is a monthly true-up that lets DTE pass through the difference between projected fuel and energy
+      market costs and actual costs. It appears as a separate line on your bill and can swing positive or
+      negative month-to-month, though in practice it has been positive most months for the last several
+      years.
+    </p>
+    <p>
+      A typical residential PSCR adjustment is a few tenths of a cent per kWh, sometimes more during periods
+      of high natural gas prices. It applies on top of the stated TOU rates. Because it varies, payback
+      modeling on this site uses the published rate-card rates without PSCR and notes the rider separately.
+    </p>
+  </section>
+
+  <section>
+    <h2>How TOU Rates Appear on the Bill</h2>
+    <p>
+      If you are on D1.11, D1.2, or D1.13 (any time-of-use plan), DTE breaks your usage into separate line
+      items by rate period. You will see something like:
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Line item</th><th>Tag</th><th class="num">Usage</th><th class="num">Rate</th><th class="num">Subtotal</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Service charge</td><td>—</td><td class="num">1 mo</td><td class="num">$8.50</td><td class="num">$8.50</td></tr>
+          <tr><td>Distribution</td><td>—</td><td class="num">650 kWh</td><td class="num">9.726¢</td><td class="num">$63.22</td></tr>
+          <tr><td>Energy — super off-peak</td><td><span class="tag tag-superoff">11.74¢</span></td><td class="num">160 kWh</td><td class="num">11.74¢</td><td class="num">$18.78</td></tr>
+          <tr><td>Energy — off-peak</td><td><span class="tag tag-offpeak">15.55¢</span></td><td class="num">410 kWh</td><td class="num">15.55¢</td><td class="num">$25.55</td></tr>
+          <tr><td>Energy — peak</td><td><span class="tag tag-peak">19.06¢</span></td><td class="num">80 kWh</td><td class="num">19.06¢</td><td class="num">$15.25</td></tr>
+          <tr><td>PSCR rider</td><td>—</td><td class="num">650 kWh</td><td class="num">~0.3¢</td><td class="num">~$1.95</td></tr>
+          <tr><td><strong>Total (winter month example)</strong></td><td></td><td class="num">650 kWh</td><td></td><td class="num"><strong>$133.25</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small text-dim">
+      Illustrative breakdown of a ~$130/month winter bill on D1.13. Real bill format will group some of
+      these line items differently, but the categories are the same. Note that distribution is the single
+      largest line, larger than any individual energy bucket — that is typical.
+    </p>
+  </section>
+
+  <section>
+    <h2>Inflow vs Outflow Under the DG Program</h2>
+    <p>
+      DTE no longer offers true net metering for new customers. The replacement is the <strong>Distributed
+      Generation</strong> program, which measures grid imports and exports <em>separately and
+      instantaneously</em> — not netted over a billing period. This is the single most important thing to
+      understand if you are sizing a system.
+    </p>
+    <ul>
+      <li><strong>Inflow</strong> (grid → home) is billed at the full TOU rate for whatever period you are in. Same as a non-solar customer.</li>
+      <li><strong>Outflow</strong> (home → grid) earns a credit at the DG export rate — currently roughly <strong>7.75¢ off-peak and ~14¢ summer peak</strong>. These are far below retail rates.</li>
+    </ul>
+    <p>
+      Critically, because measurement is instantaneous, a kilowatt-hour exported at 2pm cannot offset a
+      kilowatt-hour imported at 8pm. The export earns its export rate; the import is billed separately at
+      the retail rate. There is no monthly bank or roll-over.
+    </p>
+    <div class="callout warning">
+      <h4>Implication for system design</h4>
+      <p>
+        Because exports pay roughly a third of what imports cost, the dollar value of every kWh of solar
+        depends entirely on whether you consume it yourself or send it back. A right-sized system with
+        battery storage that shifts midday solar into evening peak captures full retail value on most of
+        its production. An oversized panel-only system gives away a large fraction of its output at the
+        low export rate.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>The Service Charge and Other Fixed Items</h2>
+    <p>
+      DTE charges a fixed <strong>$8.50/month service charge</strong> regardless of usage. This is the cost
+      of having the connection at all — meter reading, billing, customer service overhead. Solar does not
+      avoid this charge: even a customer who exports more than they import will still owe $8.50/month.
+      There is also a small <strong>RIA (Renewable Integration Assessment) credit</strong> of $-8.50 that
+      effectively offsets the service charge for many customers; check your bill to confirm whether it
+      applies.
+    </p>
+    <p>
+      For battery-only / zero-export builds, the service charge is essentially a floor you cannot beat.
+      Plan accordingly: the smallest possible DTE bill for a still-connected home is around $9–10 plus a
+      tiny amount of distribution and PSCR even if you import almost nothing.
+    </p>
+  </section>
+
+  <section>
+    <h2>How to Download Your Hourly Usage Data</h2>
+    <p>
+      DTE provides every residential customer with hourly interval data through the <strong>Energy Bridge /
+      Green Button</strong> download feature in the online account portal. Pull this before you size any
+      system — sizing on monthly totals alone is a recipe for an oversized array or undersized battery.
+    </p>
+    <ol>
+      <li>Log in to your DTE account at dteenergy.com.</li>
+      <li>Navigate to Energy Usage → Download My Data (sometimes labeled "Green Button Download").</li>
+      <li>Select a CSV format and a date range — at least 12 months if you have it.</li>
+      <li>The file will contain one row per hour with a start timestamp and kWh consumed during that hour.</li>
+    </ol>
+    <p>
+      With a year of hourly data you can answer the questions that actually drive sizing: what is my
+      overnight baseline draw, when does my real peak hit (is it 3–7pm or actually 5–9pm in your
+      household?), how much usage already falls in the super off-peak window before any behavioral
+      change, and what fraction of summer usage is the central AC. The reference household on this site
+      runs an 18.86 kWh/day average with a 64W overnight baseline — yours will be different, and the only
+      way to know is to look.
+    </p>
+  </section>
+
+  <section>
+    <h2>Related Reading</h2>
+    <div class="grid">
+      <a class="card" href="../rates.html">
+        <h3>DTE Rate Plans Reference</h3>
+        <p class="text-dim">Side-by-side rate comparison for D1.11, D1.2, D1.13, Cool Currents, and the legacy D1.8.</p>
+      </a>
+      <a class="card" href="stacking-strategy.html">
+        <h3>The Stacking Strategy</h3>
+        <p class="text-dim">How combining plan switch + Cool Currents + battery + solar + EV multiplies savings.</p>
+      </a>
+      <a class="card" href="../calculator.html">
+        <h3>Calculator</h3>
+        <p class="text-dim">Plug in your numbers and see your projected payback at full equipment cost.</p>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/nav.js"></script>
+</body>
+</html>

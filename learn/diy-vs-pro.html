@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DIY vs Professional Install — DTE Solar Plan</title>
+<meta name="description" content="How Michigan homeowners can mix DIY work with licensed-electrician sub-out for solar and battery installs — licensing, permitting, DTE interconnection, and risks.">
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<div id="site-header"></div>
+
+<main class="container page">
+
+  <section>
+    <h1>DIY vs Professional Install</h1>
+    <p class="lede text-dim">
+      The cheapest residential solar + battery installs in 2026 are almost always hybrid — homeowner-built
+      where the law and good sense allow it, and licensed-electrician-finished where they don't. This page
+      explains what Michigan actually requires, what tasks the homeowner can safely do, what the DTE
+      interconnection process looks like end to end, and where the real risks live.
+    </p>
+  </section>
+
+  <section>
+    <h2>Michigan Licensing Requirements</h2>
+    <p>
+      Michigan requires that <strong>any electrical work that connects to the home's main service panel or
+      to the utility grid</strong> be performed or directly supervised by a licensed electrical contractor.
+      Practically, that means the final grid-tie, the panel breaker installation, and the inspection
+      sign-off must come from someone with a Michigan electrical license. This is not optional and not
+      negotiable with your AHJ (Authority Having Jurisdiction — usually the city building department).
+    </p>
+    <p>
+      What Michigan does <em>not</em> require a license for varies by municipality, but generally includes
+      assembling battery racks, mounting solar panel racking on a roof, running DC conduit between the
+      array and the inverter location, and assembling the battery bank (busbars, fuses, BMS wiring). The
+      law's line is roughly "before the inverter on the DC side, owner-builder is allowed; from the
+      inverter through the panel to the meter, licensed only."
+    </p>
+    <p>
+      Even within the DIY-allowed portion, the homeowner-builder exemption typically only applies to
+      single-family owner-occupied homes. If you own a rental property, the exemption does not apply and
+      all the work must be done under license.
+    </p>
+  </section>
+
+  <section>
+    <h2>Tasks Homeowners Can Reasonably Do</h2>
+    <p>
+      A homeowner with reasonable mechanical and electrical aptitude — the kind of person who has wired
+      up a 240V dryer outlet or installed a ceiling fan — can do a substantial fraction of a solar +
+      battery install themselves:
+    </p>
+    <ul class="checks">
+      <li><strong>Site selection and design</strong> — roof orientation, shading analysis, array layout, system sizing. This is the part that most affects payback and is often done <em>worse</em> by sales-driven installers than by a careful homeowner with a year of hourly data.</li>
+      <li><strong>Panel mounting and racking</strong> — flashing, rail attachment, panel clamping. Anyone who can install a ridge vent can install solar rails. The risk here is fall protection and water sealing, not electrical.</li>
+      <li><strong>Battery rack assembly</strong> — racking the modules, torquing the busbar bolts, terminating the BMS and balance leads. With 48V LiFePO4, this is well within homeowner reach.</li>
+      <li><strong>DC conduit and wire runs</strong> — from array combiner to MPPT, from MPPT to inverter, from battery to inverter. Many municipalities allow this under the homeowner exemption; check yours.</li>
+      <li><strong>Inverter and Cerbo GX wall-mount</strong> — physical mounting and DC-side wiring. AC-side wiring waits for the electrician.</li>
+      <li><strong>Commissioning configuration</strong> — VictronConnect setup, Cerbo network setup, Dynamic ESS schedule, EG4 monitor setup. Software-side work that no contractor will do for you anyway.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>The Subcontracting Model</h2>
+    <p>
+      The model most owner-builders use looks like this: the homeowner designs the system, sources all
+      the equipment, mounts the panels, builds the battery, runs the DC, and stages the inverter ready
+      to be wired. Then a <strong>licensed electrician is hired for a half-day or full-day visit</strong>
+      to do the AC-side work — pull the main, install the backfeed breaker (or critical-load subpanel),
+      terminate the inverter AC output, and sign off on the work.
+    </p>
+    <p>
+      In Southeast Michigan, going rates for a half-day electrician visit on a pre-staged solar/battery
+      install run roughly $500–1,200 depending on the complexity of the panel work. This is a small
+      fraction of what a full turnkey install would cost, and it preserves the homeowner's full control
+      over equipment choice and system architecture. Some electricians specialize in this hybrid model and
+      will help you plan the rough-in so they can do the finish work efficiently.
+    </p>
+    <p>
+      Important: the electrician must be willing to put their license on a system that they did not
+      install soup-to-nuts. Not all of them will. Have this conversation up front, ideally before you buy
+      equipment, so the electrician can review your inverter and battery choices and confirm they are
+      comfortable signing off on the install.
+    </p>
+  </section>
+
+  <section>
+    <h2>NABCEP Certification (For the Truly Committed)</h2>
+    <p>
+      <strong>NABCEP</strong> (the North American Board of Certified Energy Practitioners) offers the
+      industry-standard solar and battery certifications: PV Associate, PV Installation Professional, and
+      PV Technical Sales. These are not Michigan licenses — they are voluntary industry credentials — but
+      they are widely recognized and a path for someone who wants to move from DIY-on-my-own-house to
+      doing it professionally.
+    </p>
+    <p>
+      For most homeowners doing one installation, NABCEP is overkill. But if you find yourself helping
+      neighbors, considering a career change, or you simply want the structured training, the PV
+      Associate exam is a reasonable entry point. The associate-level credential combined with a
+      Michigan electrical license is a complete professional toolkit.
+    </p>
+  </section>
+
+  <section>
+    <h2>The DTE Interconnection Process, Step by Step</h2>
+    <p>
+      Whether your system is DIY, hybrid, or fully professional, if it will export to the grid (or even
+      if it is a parallel-tied non-export system) you go through DTE's interconnection process. For
+      residential systems under 20 kW the process is relatively streamlined:
+    </p>
+    <ol>
+      <li><strong>Application</strong> — submit DTE's interconnection application with system schematics, equipment cut sheets, and the $50 fee. Most of the form-filling happens here.</li>
+      <li><strong>DTE approval</strong> — DTE reviews and issues a conditional approval to construct. Typical turnaround is 2–6 weeks. Do not start work expecting to be done before this approval; some homeowners pre-stage but do not energize.</li>
+      <li><strong>Install</strong> — perform the physical install, hybrid or otherwise. Document everything with photographs as you go — your AHJ inspector will appreciate it and so will DTE if there are questions later.</li>
+      <li><strong>AHJ inspection</strong> — your city or township building department inspects the finished work. This is the licensed electrician's sign-off step. Once passed, the AHJ issues an inspection certificate.</li>
+      <li><strong>DTE meter swap / turn-on</strong> — submit the AHJ certificate to DTE. They schedule a meter swap (if needed for bidirectional metering) and authorize commercial operation. Only after this step can you legally energize the inverter and export to the grid.</li>
+    </ol>
+    <p>
+      For pure zero-export systems (battery-only, no grid export ever), some homeowners skip the DG
+      portion entirely and just file standard electrical permits. This is much simpler administratively
+      and is one reason the battery-first / zero-export approach is so popular for DIY builds.
+    </p>
+  </section>
+
+  <section>
+    <h2>Permitting Varies by Municipality</h2>
+    <p>
+      Michigan does not have a unified statewide residential solar permitting process. Every municipality
+      sets its own rules:
+    </p>
+    <ul>
+      <li><strong>Detroit</strong> — permits handled through the Buildings, Safety Engineering and Environmental Department (BSEED). Online portal, structural review for any roof-mount, electrical review for the AC side.</li>
+      <li><strong>Dearborn</strong> — separate building, electrical, and (for some configurations) mechanical permits. Inspector schedules can be tight; book ahead.</li>
+      <li><strong>Ann Arbor</strong> — generally solar-friendly with a streamlined process; specific solar permit checklist available from the city building department.</li>
+      <li><strong>Smaller townships</strong> — often have less specific solar guidance, which can cut either way. Sometimes the inspector is reasonable and pragmatic; sometimes they have never seen a solar permit before and the process drags.</li>
+    </ul>
+    <p>
+      Always call your local building department before you buy anything. Ask: do you require sealed
+      engineer drawings for roof-mount, what is your interpretation of the homeowner electrical
+      exemption, do you require a separate battery permit, and how many inspections will the install need.
+      Five minutes on the phone here can save weeks of rework later.
+    </p>
+  </section>
+
+  <section>
+    <div class="callout warning">
+      <h4>Risks of Pure DIY</h4>
+      <p>
+        DIY solar and battery work is reasonable for a careful, mechanically inclined homeowner — but it is
+        not risk-free, and pretending otherwise does no one any favors. The risks worth taking seriously:
+      </p>
+      <ul>
+        <li><strong>Live electrical at the main panel</strong> — pulling the main is non-trivial. Even with the main off, the lugs above it are still hot. This is one of the things you are paying the electrician to do correctly.</li>
+        <li><strong>Falls from the roof</strong> — statistically the most common solar-install injury, by far. Anchor points, harnesses, and a buddy on the ground are not optional.</li>
+        <li><strong>Lithium battery thermal events</strong> — LiFePO4 is the safest commonly available lithium chemistry, but a poorly torqued busbar, an undersized fuse, or a botched BMS connection can still produce a fire. Follow the manufacturer's commissioning checklist exactly.</li>
+        <li><strong>Voided warranties</strong> — most inverter manufacturers require commissioning by a certified installer or an explicit homeowner self-commissioning protocol. Skip it and you may be on your own if a $4,000 inverter dies in year three.</li>
+        <li><strong>Insurance complications</strong> — some homeowner's insurance policies require disclosure of solar/battery installations, and unpermitted work can create coverage gaps. Notify your insurer in writing.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Related Reading</h2>
+    <div class="grid">
+      <a class="card" href="equipment.html">
+        <h3>Equipment Guide</h3>
+        <p class="text-dim">What to actually buy: inverters, batteries, panels, and comfort kit.</p>
+      </a>
+      <a class="card" href="../configurations.html">
+        <h3>Example Configurations</h3>
+        <p class="text-dim">Five buildable systems with full bill-of-materials and staged-build paths.</p>
+      </a>
+      <a class="card" href="why-michigan.html">
+        <h3>Why This Works in Michigan</h3>
+        <p class="text-dim">The case for solar + battery in 2026 without the federal tax credit.</p>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/nav.js"></script>
+</body>
+</html>

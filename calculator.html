@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>System Planner — DTE Solar & Battery</title>
+<meta name="description" content="Interactive calculator for DTE residential customers in Southeast Michigan. Pick your daily kWh, rate plan, and planned additions to see payback and 25-year savings — assuming zero federal tax credit.">
+<link rel="stylesheet" href="assets/css/main.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  /* Page-local tweaks */
+  .season-toggle { display: flex; gap: .5rem; margin-bottom: 1rem; }
+  .season-toggle button {
+    background: var(--color-bg-alt);
+    color: var(--color-text-dim);
+    border: 1px solid var(--color-border);
+    padding: .4rem .9rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: .9rem;
+    font-family: inherit;
+  }
+  .season-toggle button.active {
+    background: var(--color-accent);
+    color: #1a1106;
+    border-color: var(--color-accent);
+    font-weight: 600;
+  }
+  .equipment-breakdown {
+    margin-top: .5rem;
+    font-size: .8rem;
+    color: var(--color-text-dim);
+    list-style: none;
+    padding-left: 0;
+  }
+  .equipment-breakdown li {
+    display: flex; justify-content: space-between;
+    padding: .15rem 0;
+    border-bottom: 1px dashed var(--color-border);
+  }
+  .equipment-breakdown li:last-child { border-bottom: none; }
+  .conditional { display: none; }
+  .conditional.show { display: block; }
+  .reasoning {
+    background: var(--color-bg-alt);
+    border-left: 3px solid var(--color-accent);
+    padding: .6rem .8rem;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: .9rem;
+    margin-top: .5rem;
+  }
+  .seasonal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: .5rem;
+  }
+  .seasonal-grid > div {
+    background: var(--color-bg-alt);
+    padding: .75rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+  }
+  .seasonal-grid h4 { margin: 0 0 .35rem; font-size: .95rem; }
+  .seasonal-grid .val { font-family: var(--font-mono); color: var(--color-accent); font-weight: 600; }
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+
+<main class="container page">
+  <h1>System Planner</h1>
+  <p class="lede text-dim">Plug in your numbers. All calculations assume zero federal tax credit.</p>
+
+  <div class="calc-layout">
+    <form class="calc-form" id="calc-form" onsubmit="return false;">
+
+      <div class="field">
+        <label for="dailyKwh">Daily kWh usage</label>
+        <span class="help">Typical DTE home: 15–25 kWh/day</span>
+        <div class="range-row">
+          <input type="range" id="dailyKwh" min="5" max="100" step="1" value="19">
+          <span class="range-value" id="dailyKwhVal">19</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="currentPlan">Current rate plan</label>
+        <select id="currentPlan">
+          <option value="D1.11" selected>D1.11 — Time of Day 3–7pm (default)</option>
+          <option value="D1.2">D1.2 — Time of Day 11am–7pm</option>
+          <option value="D1.13">D1.13 — Overnight Savers</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>
+          <input type="checkbox" id="coolCurrents">
+          Has Cool Currents (separate AC meter)
+        </label>
+        <span class="help">DTE moves ~250 kWh/mo summer AC load to a flat-rate meter.</span>
+      </div>
+
+      <div class="field">
+        <label>Planned additions</label>
+        <div class="check-list">
+          <label><input type="checkbox" id="addSolar"> Solar</label>
+          <label><input type="checkbox" id="addBattery"> Battery</label>
+          <label><input type="checkbox" id="addMiniSplit"> Mini-split</label>
+          <label><input type="checkbox" id="addEv"> EV</label>
+          <label><input type="checkbox" id="addHeatPump"> Heat pump</label>
+          <label><input type="checkbox" id="addEwh"> Electric water heater</label>
+        </div>
+      </div>
+
+      <div class="field conditional" id="solarOpts">
+        <label for="panelCount">Number of 400W panels</label>
+        <div class="range-row">
+          <input type="range" id="panelCount" min="4" max="25" step="1" value="8">
+          <span class="range-value" id="panelCountVal">8</span>
+        </div>
+        <label for="orientation" style="margin-top:.5rem">Roof orientation</label>
+        <select id="orientation">
+          <option value="S" selected>South (optimum)</option>
+          <option value="SE">Southeast</option>
+          <option value="SW">Southwest</option>
+          <option value="E">East</option>
+          <option value="W">West</option>
+        </select>
+      </div>
+
+      <div class="field conditional" id="batteryOpts">
+        <label for="batteryCount">Number of EG4 LL-S batteries</label>
+        <div class="range-row">
+          <input type="range" id="batteryCount" min="1" max="8" step="1" value="4">
+          <span class="range-value" id="batteryCountVal">4</span>
+        </div>
+        <span class="help">Capacity: <span id="batteryKwh" class="text-accent">19.2</span> kWh (4.8 kWh per battery)</span>
+      </div>
+
+      <div class="field conditional" id="evOpts">
+        <label for="evMiles">Daily EV miles</label>
+        <div class="range-row">
+          <input type="range" id="evMiles" min="10" max="100" step="5" value="35">
+          <span class="range-value" id="evMilesVal">35</span>
+        </div>
+        <span class="help">Efficiency assumed: 3.5 mi/kWh</span>
+      </div>
+
+    </form>
+
+    <div class="calc-result" id="calc-result">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/calculator.js"></script>
+</body>
+</html>
