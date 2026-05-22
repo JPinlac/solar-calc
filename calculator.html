@@ -102,11 +102,19 @@
       </div>
 
       <div class="field">
+        <label for="evCount">Number of EVs (0–4)</label>
+        <span class="help">Each EV charges at the 11.74¢ super off-peak rate. 0 = no EV.</span>
+        <div class="range-row">
+          <input type="range" id="evCount" min="0" max="4" step="1" value="0">
+          <span class="range-value" id="evCountVal">0</span>
+        </div>
+      </div>
+
+      <div class="field">
         <label>Planned additions</label>
         <div class="check-list">
           <label><input type="checkbox" id="addSolar"> Solar (400W Phono panels @ $145)</label>
           <label><input type="checkbox" id="addMiniSplit"> Mini-split</label>
-          <label><input type="checkbox" id="addEv"> EV</label>
           <label><input type="checkbox" id="addHeatPump"> Heat pump (replaces gas furnace)</label>
           <label><input type="checkbox" id="addEwh"> Electric water heater</label>
         </div>
@@ -134,12 +142,12 @@
       </div>
 
       <div class="field conditional" id="evOpts">
-        <label for="evMiles">Daily EV miles</label>
+        <label for="evMiles">Daily miles per EV</label>
+        <span class="help">Efficiency assumed: 3.5 mi/kWh. Total EV kWh/day = count × miles / 3.5.</span>
         <div class="range-row">
           <input type="range" id="evMiles" min="10" max="100" step="5" value="35">
           <span class="range-value" id="evMilesVal">35</span>
         </div>
-        <span class="help">Efficiency assumed: 3.5 mi/kWh</span>
       </div>
 
     </form>

@@ -330,7 +330,31 @@
       </p>
     </div>
 
-    <h3>Stage 3 — Scale for EV + Heat Pump</h3>
+    <h3>Stage 3 — Full Electrification (2 EVs + Heat Pump + Electric Water Heater)</h3>
+    <p class="text-dim">
+      Add this stage when you're committing to full household electrification: gas furnace
+      replaced with a heat pump, gas water heater replaced with electric, and two EVs in the
+      household. Daily load climbs to roughly <strong>50–55 kWh/day</strong> annual average
+      (~19 baseline + ~18 for two EVs + ~8 winter-weighted heat pump + 6 water heater).
+      <strong>Total panels stay at 24</strong> (9.6 kW). Stage 3 adds the second inverter pair and
+      a second battery; if you took Stage 2-Small, it also adds the 16 panels you're missing.
+    </p>
+
+    <h4>Stage 3-A — if you took Stage 2-Large (already 24 panels)</h4>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Model</th><th class="num">Price</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Additional inverters</td><td>2× Victron MultiPlus-II 48/5000 in parallel (~16 kW split phase with Stage 1)</td><td class="num">$3,620</td></tr>
+          <tr><td>Additional battery</td><td>Second Docan Panda 32 kWh (total 64 kWh)</td><td class="num">$3,315</td></tr>
+          <tr><td colspan="2"><strong>Stage 3-A add</strong></td><td class="num"><strong class="text-accent">$6,935</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Stage 3-B — if you took Stage 2-Small (only 8 panels so far)</h4>
     <div class="table-wrap">
       <table>
         <thead>
@@ -338,13 +362,32 @@
         </thead>
         <tbody>
           <tr><td>Additional inverters</td><td>2× Victron MultiPlus-II 48/5000 in parallel</td><td class="num">$3,620</td></tr>
-          <tr><td>Additional solar</td><td>24× 400W Phono panels + 2× SmartSolar MPPT 250/100 + racking</td><td class="num">$6,080</td></tr>
-          <tr><td>Additional battery (optional)</td><td>Second Docan Panda 32 kWh</td><td class="num">$3,315</td></tr>
+          <tr><td>Additional battery</td><td>Second Docan Panda 32 kWh</td><td class="num">$3,315</td></tr>
+          <tr><td>Additional solar</td><td>16× 400W Phono panels + Victron SmartSolar MPPT 250/100 + racking (brings total to 24)</td><td class="num">$3,620</td></tr>
+          <tr><td colspan="2"><strong>Stage 3-B add</strong></td><td class="num"><strong class="text-accent">$10,555</strong></td></tr>
         </tbody>
       </table>
     </div>
-    <p>Add capacity only as new electrified loads arrive. Each addition slots into the same Cerbo GX-managed
-    Victron system. There is no forklift upgrade.</p>
+
+    <p>Both paths end at the same place: <strong>24 panels (9.6 kW), 64 kWh battery, ~16 kW
+    inverter</strong>. The added battery shifts the full daily electrified load through peak hours
+    plus reserves capacity for overnight EV charging and a winter morning of heat-pump operation.
+    The added inverter pair runs in parallel with the Stage 1 MultiPlus-II 48/3000s, giving enough
+    split-phase output for simultaneous EV charging, heat-pump start, and household peak loads
+    without grid import.</p>
+
+    <div class="callout success">
+      <h4>Full Stage 1 + 2 + 3 totals (either path)</h4>
+      <p class="mb-0">
+        Both routes end at <strong>$18,880</strong> total system cost
+        (Stage 1 $5,865 + Stage 2-Small $2,460 + Stage 3-B $10,555 = $18,880, or
+        Stage 1 $5,865 + Stage 2-Large $6,080 + Stage 3-A $6,935 = $18,880).<br>
+        <strong>Combined annual savings:</strong> $2,000–2,800 depending on EV miles, winter
+        severity, and rate trajectory.<br>
+        <strong>Combined payback:</strong> ~8–10 years on $18,880, faster under the aggressive
+        5.5% rate inflation scenario.
+      </p>
+    </div>
 
     <h3>Why Victron for staged builds</h3>
     <ul class="checks">

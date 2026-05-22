@@ -42,10 +42,10 @@
   // Mini-split and heat pump are seasonal; we use a weighted annual average so
   // the slider reads like a year-round daily figure.
   const ADDITION_KWH = {
-    ev: (state) => state.evMiles / EV_EFFICIENCY,                  // year-round
-    ewh: () => EWH_KWH,                                            // year-round
-    mini: () => 3.5,                                               // ~avg of 4 (summer) / 3 (winter)
-    hp: () => HEAT_PUMP_WINTER_KWH * 0.7,                          // winter-weighted annual avg
+    ev: (state) => (state.evCount || 0) * (state.evMiles / EV_EFFICIENCY),  // year-round, scales with count
+    ewh: () => EWH_KWH,                                                     // year-round
+    mini: () => 3.5,                                                        // ~avg of 4 (summer) / 3 (winter)
+    hp: () => HEAT_PUMP_WINTER_KWH * 0.7,                                   // winter-weighted annual avg
   };
 
   // Tracks the addition contributions currently baked into the slider, so we
@@ -57,15 +57,15 @@
   // the bumped value. User-initiated drags of the slider itself are preserved
   // (delta is zero in that case because additions didn't change).
   const syncSliderWithAdditions = () => {
+    const evCount = +$('evCount').value;
+    const evMiles = +$('evMiles').value;
     const checked = {
-      ev: $('addEv').checked,
       ewh: $('addEwh').checked,
       mini: $('addMiniSplit').checked,
       hp: $('addHeatPump').checked,
     };
-    const evMiles = +$('evMiles').value;
     const additions = {
-      ev: checked.ev ? ADDITION_KWH.ev({ evMiles }) : 0,
+      ev: ADDITION_KWH.ev({ evCount, evMiles }),
       ewh: checked.ewh ? ADDITION_KWH.ewh() : 0,
       mini: checked.mini ? ADDITION_KWH.mini() : 0,
       hp: checked.hp ? ADDITION_KWH.hp() : 0,
@@ -90,7 +90,9 @@
   // ---------- Read form state ----------
   // Battery count and inverter tier are NOT user inputs anymore — both are
   // sized automatically from the load profile (see autoSizeBattery / autoSizeInverter).
+  // evCount is the source of truth for EVs; addEv is derived (count > 0).
   const readState = () => {
+    const evCount = +$('evCount').value;
     const s = {
       dailyKwh: +$('dailyKwh').value,
       currentPlan: $('currentPlan').value,
@@ -98,7 +100,8 @@
       addSolar: $('addSolar').checked,
       addBattery: true,
       addMiniSplit: $('addMiniSplit').checked,
-      addEv: $('addEv').checked,
+      addEv: evCount > 0,
+      evCount,
       addHeatPump: $('addHeatPump').checked,
       addEwh: $('addEwh').checked,
       panelCount: +$('panelCount').value,
@@ -117,23 +120,22 @@
   // 20% headroom for cloudy winter days and degradation, rounded up to whole 32kWh Pandas.
   const SUPER_OFF_DIRECT_FRACTION = 0.18; // approx % of daily kWh during 1-7am per hourlyLoadProfile
   function autoSizeBattery(s) {
-    const houseShiftable = s.dailyKwh * (1 - SUPER_OFF_DIRECT_FRACTION);
-    let extraShiftable = 0;
-    if (s.addHeatPump) extraShiftable += HEAT_PUMP_WINTER_KWH * 0.7; // winter-weighted annual avg
-    if (s.addEwh) extraShiftable += EWH_KWH * 0.5;
-    if (s.addMiniSplit) extraShiftable += 3;
-    const required = (houseShiftable + extraShiftable) * 1.2;
-    return Math.max(1, Math.ceil(required / BATTERY_KWH_EACH));
+    // s.dailyKwh is the TOTAL daily load (slider already includes EV, HP, EWH,
+    // mini-split via the auto-bump in syncSliderWithAdditions). EV charges
+    // directly during super off-peak — it doesn't need battery capacity — so
+    // subtract EV kWh before computing the shiftable portion.
+    const evKwh = s.addEv ? (s.evCount || 0) * (s.evMiles / EV_EFFICIENCY) : 0;
+    const nonEvLoad = Math.max(2, s.dailyKwh - evKwh);
+    const shiftable = nonEvLoad * (1 - SUPER_OFF_DIRECT_FRACTION);
+    return Math.max(1, Math.ceil((shiftable * 1.2) / BATTERY_KWH_EACH));
   }
 
   // Inverter sizes to total household daily load. MP2-3000 pair (6kW) handles a
   // typical home; heat pump or large totals (>=35 kWh/day) bump to MP2-5000 pair
   // (10kW); very large totals (>60 kWh/day) double up to two pairs in parallel.
   function autoSizeInverter(s) {
-    const totalDaily = s.dailyKwh +
-      (s.addEv ? s.evMiles / EV_EFFICIENCY : 0) +
-      (s.addHeatPump ? HEAT_PUMP_WINTER_KWH * 0.7 : 0) +
-      (s.addEwh ? EWH_KWH : 0);
+    // s.dailyKwh already includes additions (slider auto-bumped).
+    const totalDaily = s.dailyKwh;
     if (totalDaily > 60) {
       return { label: '4× Victron MultiPlus-II 48/5000 (20 kW parallel split phase) + Cerbo GX', cost: 7590, kw: 20 };
     }
@@ -193,10 +195,11 @@
 
     const load = DTE.hourlyLoadProfile.map(pct => baseDaily * pct);
 
-    // EV — 12 kWh/day if EV checked, placed at super off-peak window for D1.13,
-    // otherwise at off-peak overnight.
+    // EV — total kWh = count × miles / 3.5, placed at super off-peak window for
+    // D1.13, otherwise at off-peak overnight. 2+ EVs simply share the same
+    // window (staggered chargers or one 40A charger time-sharing).
     if (s.addEv) {
-      const evKwh = s.evMiles / EV_EFFICIENCY;
+      const evKwh = (s.evCount || 0) * (s.evMiles / EV_EFFICIENCY);
       const planId = recommendPlan(s).id;
       const hours = planId === 'D1.13' ? [1,2,3,4,5,6] : [22,23,0,1,2,3,4,5];
       const perHr = evKwh / hours.length;
@@ -435,6 +438,7 @@
     // Sync value displays
     $('dailyKwhVal').textContent = s.dailyKwh;
     $('panelCountVal').textContent = s.panelCount;
+    $('evCountVal').textContent = s.evCount;
     $('evMilesVal').textContent = s.evMiles;
 
     // "No-system" baseline must include the SAME load additions (EV, heat pump,
