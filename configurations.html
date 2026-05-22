@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Example System Configurations — DTE Solar Plan</title>
+<meta name="description" content="Five buildable real-world solar and battery configurations for DTE residential customers, from a $1,450 comfort upgrade to a $15,899 full electrification build, including the recommended staged Victron + Docan Panda path.">
+<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<div id="site-header"></div>
+
+<main class="container page">
+
+  <section>
+    <h1>Example System Configurations</h1>
+    <p class="lede text-dim">
+      Five buildable, real-world configurations for DTE residential customers in Southeast Michigan — ranging
+      from a <strong>$1,450 comfort upgrade</strong> (Cool Currents + mini-split) to a
+      <strong>~$15,899 full electrification build</strong> (home + EV + heat pump). Every price assumes
+      <strong>zero federal tax credit</strong> and DIY-friendly equipment available from US distributors.
+    </p>
+  </section>
+
+  <section>
+    <h2>Comparison</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th class="num">Total cost</th>
+            <th>Best for</th>
+            <th>Est. payback</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="#config-a"><strong>A</strong></a></td>
+            <td><a href="#config-a">Battery-Only Arbitrage</a></td>
+            <td class="num">$9,769</td>
+            <td>Renters, shaded roofs, pre-reroof</td>
+            <td>~14–18 yrs (battery only)</td>
+          </tr>
+          <tr>
+            <td><a href="#config-b"><strong>B</strong></a></td>
+            <td><a href="#config-b">Solar + Battery — Standard Home</a></td>
+            <td class="num">$11,545</td>
+            <td>Average DTE household (~19 kWh/day)</td>
+            <td>~13–14 yrs</td>
+          </tr>
+          <tr>
+            <td><a href="#config-c"><strong>C</strong></a></td>
+            <td><a href="#config-c">Future-Proof — Home + EV + Heat Pump</a></td>
+            <td class="num">$15,899</td>
+            <td>3–5 yr electrification plan</td>
+            <td>~8–10 yrs</td>
+          </tr>
+          <tr>
+            <td><a href="#config-d"><strong>D</strong></a></td>
+            <td><a href="#config-d">Comfort Upgrade — Mini-Split + Cool Currents</a></td>
+            <td class="num">$1,450</td>
+            <td>Hot rooms where central AC struggles</td>
+            <td>Comfort-driven</td>
+          </tr>
+          <tr>
+            <td><a href="#config-e"><strong>E</strong></a></td>
+            <td><a href="#config-e">RECOMMENDED — Victron + Docan Panda (Staged)</a></td>
+            <td class="num">$5,865 → $8,441</td>
+            <td>DIY, staged investment</td>
+            <td>~8–9 yrs (combined)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Config A -->
+  <section id="config-a">
+    <h2>Configuration A — Battery-Only Arbitrage (No Solar)</h2>
+    <p><strong>Best for:</strong> Renters with landlord permission, homes with shaded or non-viable roofs,
+    households waiting on a roof replacement before adding solar.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Model</th><th class="num">Price</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Inverter</td><td>EG4 12kPV Hybrid 48V</td><td class="num">$4,049</td></tr>
+          <tr><td>Battery</td><td>4× EG4 LL-S 48V 100Ah (19.2 kWh)</td><td class="num">$5,720</td></tr>
+          <tr><td colspan="2"><strong>Total</strong></td><td class="num"><strong class="text-accent">$9,769</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>How it works</h4>
+    <p>Switch to D1.13 Overnight Savers. Charge the battery at 11.74¢/kWh during the 1am–7am super off-peak
+    window. Discharge during peak (35.56¢ summer / 19.06¢ winter) and off-peak (25.46¢ summer / 15.55¢ winter)
+    hours. No solar interconnection, no roof work, no permitting beyond the inverter — a self-contained
+    arbitrage box.</p>
+
+    <p><strong>Annual savings:</strong> $450–550 battery-only, $700+ with EV.<br>
+    <strong>Payback:</strong> ~14–18 years battery-only, ~10–12 years with EV.</p>
+  </section>
+
+  <!-- Config B -->
+  <section id="config-b">
+    <h2>Configuration B — Solar + Battery, Standard Home (~19 kWh/day)</h2>
+    <p><strong>Best for:</strong> Average DTE household, ideally timed with a planned roof replacement so
+    panels go on a fresh roof.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Model</th><th class="num">Price</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Inverter</td><td>EG4 12kPV Hybrid 48V</td><td class="num">$4,049</td></tr>
+          <tr><td>Battery</td><td>4× EG4 LL-S 48V 100Ah (19.2 kWh)</td><td class="num">$5,720</td></tr>
+          <tr><td>Panels</td><td>8× 400W (3.2 kW array)</td><td class="num">$1,276</td></tr>
+          <tr><td>Racking / wiring</td><td>Various</td><td class="num">$750</td></tr>
+          <tr><td colspan="2"><strong>Total</strong></td><td class="num"><strong class="text-accent">$11,545</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>How it works</h4>
+    <p>On D1.13 Overnight Savers. Solar charges the battery during the day and offsets daytime household load
+    directly. The battery discharges during the 3pm–7pm peak. Whatever the battery cannot cover by evening is
+    topped off overnight from the 11.74¢ super off-peak grid. The 3.2 kW array is intentionally right-sized for
+    self-consumption — not exports — given DTE's low outflow rate.</p>
+
+    <p><strong>Annual savings:</strong> $800–900.<br>
+    <strong>Payback:</strong> ~13–14 years. 25-year savings: ~$15,000+.</p>
+  </section>
+
+  <!-- Config C -->
+  <section id="config-c">
+    <h2>Configuration C — Future-Proof, Home + EV + Heat Pump</h2>
+    <p><strong>Best for:</strong> Households planning electrification (EV, heat pump, induction) over the next
+    3–5 years. Build once; absorb new loads as they arrive.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Model</th><th class="num">Price</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Inverter</td><td>EG4 12kPV Hybrid 48V</td><td class="num">$4,049</td></tr>
+          <tr><td>Battery</td><td>5× EG4 LL-S 48V 100Ah (24 kWh)</td><td class="num">$7,150</td></tr>
+          <tr><td>Panels</td><td>20× 400W (8.0 kW array)</td><td class="num">$3,200</td></tr>
+          <tr><td>Racking / wiring</td><td>Various</td><td class="num">$1,250</td></tr>
+          <tr><td colspan="2"><strong>Total</strong></td><td class="num"><strong class="text-accent">$15,899</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>How it works</h4>
+    <p>Built for the 50–70 kWh/day a fully electrified household consumes (home + EV + heat pump in winter).
+    Larger array sized for winter heat-pump production; oversized battery absorbs solar midday and discharges
+    against the long winter evening peak. EV charges overnight at super off-peak.</p>
+
+    <p><strong>Annual savings:</strong> $1,500–2,000.<br>
+    <strong>Payback:</strong> ~8–10 years. 25-year savings: ~$30,000+.</p>
+  </section>
+
+  <!-- Config D -->
+  <section id="config-d">
+    <h2>Configuration D — Comfort Upgrade, Mini-Split + Cool Currents</h2>
+    <p><strong>Best for:</strong> Homes with hot rooms where central AC struggles, or households not ready to
+    invest in solar/battery but wanting an immediate comfort and bill improvement.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Model</th><th class="num">Price</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Mini-split 12,000 BTU</td><td>Living-room cooling / heating</td><td class="num">$1,100</td></tr>
+          <tr><td>Cool Currents enrollment</td><td>Central AC on separate meter at ~17¢/kWh</td><td class="num">$0</td></tr>
+          <tr><td>Pioneer ECOasis ERV</td><td>Fresh air + MERV 13 filtration</td><td class="num">$350</td></tr>
+          <tr><td colspan="2"><strong>Total</strong></td><td class="num"><strong class="text-accent">$1,450</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>How it works</h4>
+    <p>Enroll the central AC in Cool Currents — it moves to a flat ~17¢/kWh summer rate on a separate meter.
+    The mini-split handles problem rooms and provides backup when DTE briefly cycles the central unit during
+    high-demand events. The ERV provides MERV 13-filtered fresh air at just ~8W draw, improving comfort and
+    indoor air quality.</p>
+
+    <p><strong>Annual savings:</strong> Varies — primarily comfort + AC cost shift.<br>
+    <strong>Payback:</strong> Comfort benefit dominates ROI.</p>
+  </section>
+
+  <!-- Config E -->
+  <section id="config-e">
+    <h2>Configuration E — <span class="text-accent">RECOMMENDED</span> — Victron + Docan Panda (Staged)</h2>
+    <p><strong>Best for:</strong> DIY homeowners staging investment over several years, maximizing battery
+    arbitrage today, and adding solar when the roof is ready.</p>
+
+    <p>This is the build this site recommends for most DTE customers who can do their own installation. It
+    starts as a battery-only arbitrage system, becomes a battery+solar system at Stage 2 without throwing
+    anything away, and can scale to EV + heat pump loads at Stage 3.</p>
+
+    <h3>Stage 1 — Battery Arbitrage (no solar yet)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Model</th><th class="num">Price</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Inverter (split phase)</td><td>2× Victron MultiPlus-II 48/3000</td><td class="num">$2,200</td></tr>
+          <tr><td>System controller</td><td>Victron Cerbo GX</td><td class="num">$350</td></tr>
+          <tr><td>Battery</td><td>Docan Panda 32 kWh 51.2V 628Ah LiFePO4</td><td class="num">$2,755</td></tr>
+          <tr><td>Shipping (from Houston TX)</td><td>Freight delivery</td><td class="num">$560</td></tr>
+          <tr><td colspan="2"><strong>Stage 1 Total</strong></td><td class="num"><strong class="text-accent">$5,865</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Switch to D1.13. Victron Dynamic ESS automatically charges the battery at super off-peak and discharges
+    during peak. With 32 kWh of usable storage there is enough capacity to ride out a full peak window plus
+    early evening on a single overnight charge.</p>
+    <p><strong>Stage 1 annual savings:</strong> $450–550 house only, $700+ with EV.<br>
+    <strong>Stage 1 payback:</strong> ~8–12 years house only, ~7–8 years with EV.</p>
+
+    <h3>Stage 2 — Add Solar (with roof replacement)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Model</th><th class="num">Price</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Solar charge controller</td><td>Victron SmartSolar MPPT 250/100</td><td class="num">$800</td></tr>
+          <tr><td>Panels</td><td>8× 400W</td><td class="num">$1,276</td></tr>
+          <tr><td>Racking / wiring</td><td>Various</td><td class="num">$500</td></tr>
+          <tr><td colspan="2"><strong>Stage 2 add</strong></td><td class="num"><strong class="text-accent">$2,576</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Plugs into the existing Cerbo GX. Dynamic ESS auto-incorporates the new solar source — nothing from
+    Stage 1 is wasted or replaced.</p>
+
+    <div class="callout success">
+      <h4>Stage 1 + Stage 2 combined</h4>
+      <p><strong>Combined cost:</strong> $5,865 + $2,576 = <strong>$8,441</strong>.<br>
+      <strong>Combined annual savings:</strong> $900–1,100.<br>
+      <strong>Combined payback:</strong> ~8–9 years on $8,441 total.</p>
+    </div>
+
+    <h3>Stage 3 — Scale for EV + Heat Pump</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Model</th><th class="num">Price</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Additional inverters</td><td>2× Victron MultiPlus-II 48/5000 in parallel</td><td class="num">$3,620</td></tr>
+          <tr><td>Additional solar</td><td>12× 400W panels + MPPT + racking</td><td class="num">$3,000</td></tr>
+          <tr><td>Additional battery (optional)</td><td>Second Docan Panda 32 kWh</td><td class="num">$3,315</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Add capacity only as new electrified loads arrive. Each addition slots into the same Cerbo GX-managed
+    Victron system. There is no forklift upgrade.</p>
+
+    <h3>Why Victron for staged builds</h3>
+    <ul class="checks">
+      <li>Each stage is independently useful — nothing thrown away when the next stage is added.</li>
+      <li>Dynamic ESS handles rate optimization automatically — no manual scheduling.</li>
+      <li>Modular: add inverters, MPPTs, and batteries as budget allows.</li>
+      <li>48V system is safe for DIY maintenance and expansion.</li>
+      <li>Works with virtually any 48V battery — you are not locked to one brand or generation.</li>
+      <li>Lower upfront cost than an EG4 all-in-one when solar is not needed yet.</li>
+    </ul>
+
+    <h3>Why Docan Panda</h3>
+    <ul class="checks">
+      <li><strong>32 kWh for ~$2,755 = ~$86/kWh</strong> — vs ~$298/kWh for an equivalent EG4 LL-S stack.</li>
+      <li>CALB 314Ah LiFePO4 cells with an <strong>8,000-cycle</strong> life.</li>
+      <li><strong>200A continuous discharge</strong> and a 10-year warranty.</li>
+      <li>Ships from a Houston, TX warehouse — pickup option saves the $560 freight charge.</li>
+      <li>51.2V nominal — compatible with virtually any 48V inverter (Victron, EG4, Sol-Ark, Schneider).</li>
+    </ul>
+
+    <div class="callout warning">
+      <h4>Caveat: Docan Panda is a Chinese direct-import brand</h4>
+      <p>Warranty support is less established than name-brand alternatives like EG4 or LG. Buyers comfortable
+      with DIY troubleshooting and direct-from-manufacturer warranty workflows accept this tradeoff for the
+      ~3.5× price advantage. Risk-averse buyers should prefer EG4 LL-S or an LG residential battery and
+      accept the much higher per-kWh cost.</p>
+    </div>
+  </section>
+
+  <!-- Reference Case -->
+  <section>
+    <h2>Real-World Reference Case — Dearborn, MI</h2>
+    <p>The recommended configurations on this site are calibrated against a real Southeast Michigan home in
+    <strong>Dearborn, MI</strong>. The home's measured load profile drives the array sizing and battery
+    sizing assumptions used throughout the calculator and configurations above.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Measured Load Profile</h3>
+        <ul>
+          <li><strong>Daily main-meter usage:</strong> 18.86 kWh</li>
+          <li><strong>Overnight baseline:</strong> 64 W</li>
+          <li><strong>Peak 15-minute demand:</strong> 2.185 kW</li>
+          <li><strong>Top loads:</strong> furnace blower (55%), kitchen (17%), living room (15%)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Current Setup</h3>
+        <ul>
+          <li><strong>Current rate plan:</strong> D1.11 (3pm–7pm default)</li>
+          <li><strong>Cool Currents:</strong> enrolled (central AC on separate meter)</li>
+          <li><strong>Solar:</strong> none yet</li>
+          <li><strong>Battery:</strong> none yet</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Phased Optimization Timeline</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Phase</th><th>Action</th><th>Result</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Phase 1</strong></td>
+            <td>Switch to D1.13 Overnight Savers. Shift dishwasher, laundry, and any EV charging to the 1am–7am super off-peak window.</td>
+            <td>Modest savings from rate switch alone (~$100–200/yr) — sets the stage for everything that follows.</td>
+          </tr>
+          <tr>
+            <td><strong>Phase 2</strong></td>
+            <td>Add the Stage 1 Victron + Docan Panda battery build ($5,865). Enable Dynamic ESS.</td>
+            <td>Battery arbitrage delivers $450–550/yr. House never imports during peak. Payback clock starts.</td>
+          </tr>
+          <tr>
+            <td><strong>Phase 3</strong></td>
+            <td>Time the next roof replacement with the Stage 2 solar add ($2,576).</td>
+            <td>Combined savings rise to $900–1,100/yr. Solar covers daytime load, battery still arbitrages overnight.</td>
+          </tr>
+          <tr>
+            <td><strong>Phase 4</strong></td>
+            <td>Add EV and / or heat pump. Stage 3 inverter and panel expansion if needed.</td>
+            <td>Annual savings $1,500–2,000+. Overnight EV charging at 11.74¢ replaces gasoline at effective ~$1.00/gallon equivalent.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>25-Year Projected Savings Timeline</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Milestone</th>
+            <th class="num">Cumulative spend</th>
+            <th class="num">Cumulative savings</th>
+            <th class="num">Net position</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Year 0</td><td>Phase 1: switch to D1.13</td><td class="num">$0</td><td class="num">$0</td><td class="num">$0</td></tr>
+          <tr><td>Year 1</td><td>Phase 2: Stage 1 battery build</td><td class="num">$5,865</td><td class="num">$500</td><td class="num text-danger">−$5,365</td></tr>
+          <tr><td>Year 5</td><td>Battery arbitrage compounding</td><td class="num">$5,865</td><td class="num">$2,800</td><td class="num text-danger">−$3,065</td></tr>
+          <tr><td>Year 6</td><td>Phase 3: Stage 2 solar add</td><td class="num">$8,441</td><td class="num">$3,400</td><td class="num text-danger">−$5,041</td></tr>
+          <tr><td>Year 10</td><td>Combined system mature</td><td class="num">$8,441</td><td class="num">$7,800</td><td class="num text-danger">−$641</td></tr>
+          <tr><td>Year 11</td><td>Estimated payback</td><td class="num">$8,441</td><td class="num">$8,900</td><td class="num text-success">+$459</td></tr>
+          <tr><td>Year 15</td><td>Pure savings phase</td><td class="num">$8,441</td><td class="num">$13,800</td><td class="num text-success">+$5,359</td></tr>
+          <tr><td>Year 20</td><td>Pure savings phase</td><td class="num">$8,441</td><td class="num">$19,500</td><td class="num text-success">+$11,059</td></tr>
+          <tr><td>Year 25</td><td>End of panel warranty horizon</td><td class="num">$8,441</td><td class="num">$26,000+</td><td class="num text-success"><strong>+$17,500+</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small text-dim">Savings figures assume 5.5% annual DTE rate growth (the aggressive scenario
+    documented on the Projections page), battery and panel lifetimes per manufacturer specs, and zero federal
+    tax credit. Adding an EV at any point shortens payback significantly because the EV's overnight charging
+    extends the arbitrage cycle.</p>
+  </section>
+
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/nav.js"></script>
+</body>
+</html>
