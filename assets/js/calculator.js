@@ -20,10 +20,8 @@
   const BATTERY_KWH_EACH = 32;
   const BATTERY_PRICE = 2755;
   const BATTERY_FREIGHT = 560;
-  // Inverter = 2× Victron MultiPlus-II 48/3000 ($2,200) + Cerbo GX ($350) = $2,550.
-  // Required whenever a battery is present. Solar without battery uses the same
-  // Victron stack plus a SmartSolar MPPT.
-  const INVERTER_BUNDLE = 2550;
+  // Inverter is auto-sized — see autoSizeInverter(). Pricing comes from data.js:
+  //   2× MultiPlus-II 48/3000 = $2,200; 2× MP2-5000 = $3,620; Cerbo GX = $350.
   const MPPT_PRICE = 800;
   // 400W panels at $145 each — Phono Solar via D2 Solar Detroit (local Detroit retailer,
   // cheaper than the $160 mail-order baseline used elsewhere on the site).
@@ -39,25 +37,60 @@
   let activeSeason = 'summer';
 
   // ---------- Read form state ----------
-  // batteryCount is the source of truth; addBattery is derived (count > 0).
+  // Battery count and inverter tier are NOT user inputs anymore — both are
+  // sized automatically from the load profile (see autoSizeBattery / autoSizeInverter).
   const readState = () => {
-    const batteryCount = +$('batteryCount').value;
-    return {
+    const s = {
       dailyKwh: +$('dailyKwh').value,
       currentPlan: $('currentPlan').value,
       coolCurrents: $('coolCurrents').checked,
       addSolar: $('addSolar').checked,
-      addBattery: batteryCount > 0,
+      addBattery: true,
       addMiniSplit: $('addMiniSplit').checked,
       addEv: $('addEv').checked,
       addHeatPump: $('addHeatPump').checked,
       addEwh: $('addEwh').checked,
       panelCount: +$('panelCount').value,
       orientation: $('orientation').value,
-      batteryCount,
       evMiles: +$('evMiles').value,
     };
+    s.batteryCount = autoSizeBattery(s);
+    s.inverterTier = autoSizeInverter(s);
+    return s;
   };
+
+  // ---------- Auto-sizing ----------
+  // Battery sizes to the kWh that must be SHIFTED out of super-off-peak / off-peak
+  // (i.e. the part of the daily load not consumed during the 1am-7am window).
+  // EV is charged directly during super off-peak so it does NOT need battery capacity.
+  // 20% headroom for cloudy winter days and degradation, rounded up to whole 32kWh Pandas.
+  const SUPER_OFF_DIRECT_FRACTION = 0.18; // approx % of daily kWh during 1-7am per hourlyLoadProfile
+  function autoSizeBattery(s) {
+    const houseShiftable = s.dailyKwh * (1 - SUPER_OFF_DIRECT_FRACTION);
+    let extraShiftable = 0;
+    if (s.addHeatPump) extraShiftable += HEAT_PUMP_WINTER_KWH * 0.7; // winter-weighted annual avg
+    if (s.addEwh) extraShiftable += EWH_KWH * 0.5;
+    if (s.addMiniSplit) extraShiftable += 3;
+    const required = (houseShiftable + extraShiftable) * 1.2;
+    return Math.max(1, Math.ceil(required / BATTERY_KWH_EACH));
+  }
+
+  // Inverter sizes to total household daily load. MP2-3000 pair (6kW) handles a
+  // typical home; heat pump or large totals (>=35 kWh/day) bump to MP2-5000 pair
+  // (10kW); very large totals (>60 kWh/day) double up to two pairs in parallel.
+  function autoSizeInverter(s) {
+    const totalDaily = s.dailyKwh +
+      (s.addEv ? s.evMiles / EV_EFFICIENCY : 0) +
+      (s.addHeatPump ? HEAT_PUMP_WINTER_KWH * 0.7 : 0) +
+      (s.addEwh ? EWH_KWH : 0);
+    if (totalDaily > 60) {
+      return { label: '4× Victron MultiPlus-II 48/5000 (20 kW parallel split phase) + Cerbo GX', cost: 7590, kw: 20 };
+    }
+    if (s.addHeatPump || totalDaily >= 35) {
+      return { label: '2× Victron MultiPlus-II 48/5000 (10 kW split phase) + Cerbo GX', cost: 3970, kw: 10 };
+    }
+    return { label: '2× Victron MultiPlus-II 48/3000 (6 kW split phase) + Cerbo GX', cost: 2550, kw: 6 };
+  }
 
   // ---------- Recommended plan (Section 5 decision matrix) ----------
   const recommendPlan = (s) => {
@@ -248,21 +281,17 @@
     const items = [];
     let total = 0;
 
-    // Victron inverter + Cerbo GX is the shared chassis for both battery and solar.
-    // Added once if either is present.
-    const needsInverter = s.addBattery || s.addSolar;
-    if (needsInverter) {
-      items.push({ label: '2× Victron MultiPlus-II 48/3000 + Cerbo GX', cost: INVERTER_BUNDLE });
-      total += INVERTER_BUNDLE;
-    }
+    // Inverter is auto-sized from total daily load. Always present (battery is
+    // always part of the optimized scenario).
+    items.push({ label: s.inverterTier.label, cost: s.inverterTier.cost });
+    total += s.inverterTier.cost;
 
-    if (s.addBattery && s.batteryCount > 0) {
-      const battSubtotal = s.batteryCount * BATTERY_PRICE;
-      items.push({ label: `${s.batteryCount}× Docan Panda 32 kWh battery`, cost: battSubtotal });
-      total += battSubtotal;
-      items.push({ label: 'Freight (Houston TX, one-time)', cost: BATTERY_FREIGHT });
-      total += BATTERY_FREIGHT;
-    }
+    // Battery is auto-sized to the shiftable daily load.
+    const battSubtotal = s.batteryCount * BATTERY_PRICE;
+    items.push({ label: `${s.batteryCount}× Docan Panda 32 kWh battery`, cost: battSubtotal });
+    total += battSubtotal;
+    items.push({ label: 'Freight (Houston TX, one-time)', cost: BATTERY_FREIGHT });
+    total += BATTERY_FREIGHT;
 
     if (s.addSolar) {
       const panels = s.panelCount * PANEL_PRICE;
@@ -323,17 +352,13 @@
     const s = readState();
     const rec = recommendPlan(s);
 
-    // Sync conditional sections (battery slider is always visible now — 0 = none)
+    // Sync conditional sections
     $('solarOpts').classList.toggle('show', s.addSolar);
     $('evOpts').classList.toggle('show', s.addEv);
 
     // Sync value displays
     $('dailyKwhVal').textContent = s.dailyKwh;
     $('panelCountVal').textContent = s.panelCount;
-    $('batteryCountVal').textContent = s.batteryCount;
-    $('batteryKwh').textContent = s.batteryCount === 0
-      ? 'no battery'
-      : (s.batteryCount * BATTERY_KWH_EACH).toFixed(0) + ' kWh';
     $('evMilesVal').textContent = s.evMiles;
 
     // "No-system" baseline must include the SAME load additions (EV, heat pump,
@@ -365,6 +390,17 @@
       <div class="card">
         <h3 style="margin-top:0">Recommended Plan: ${rec.id}</h3>
         <div class="reasoning">${rec.reason}</div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0;font-size:1rem">Auto-sized system</h3>
+        <ul class="equipment-breakdown">
+          <li><span>Battery</span><span>${s.batteryCount}× Docan Panda — ${s.batteryCount * BATTERY_KWH_EACH} kWh</span></li>
+          <li><span>Inverter</span><span>${s.inverterTier.kw} kW Victron</span></li>
+        </ul>
+        <p class="small text-dim" style="margin-top:.5rem;margin-bottom:0">
+          Sized to shift your full daily load with 20% headroom. Adjust your inputs above to re-size.
+        </p>
       </div>
 
       <div class="metric-grid">
